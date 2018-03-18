@@ -35,6 +35,15 @@ return { return KW_RETURN; }
 && { return OPERATOR_AND; }
 \|\| { return OPERATOR_OR; }
 
+/// Identificadores
+([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0..9])* {  return TK_IDENTIFIER; }
+
+/// Literais
+[0..9]+ { return LIT_INTEGER; }
+[0..9]+\.[0..9]+ { return LIT_REAL; }
+'.' { return LIT_CHAR; }
+\"(\\.|[^"])*\" { return LIT_STRING; }
+
 %%
 
 int getLineNumber(void) { return yylineno; }
