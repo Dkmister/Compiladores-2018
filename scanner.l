@@ -24,6 +24,9 @@ read { return KW_READ; }
 print { return KW_PRINT; }
 return { return KW_RETURN; }
 
+/// Caracteres especiais
+(,|;|:|\(|\)|\[|\]|\{|\}|\+|\-|\*|\/|<|>|=|!|&|\$|\%|#) { return (int) yytext[0]; }
+
 %%
 
 int getLineNumber(void) { return yylineno; }
