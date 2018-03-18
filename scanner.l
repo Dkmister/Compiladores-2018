@@ -1,11 +1,11 @@
 /* Diego Dasso Migotto 00242243
-   Vilmar Neto 00000000*/
+   Vilmar Neto 00242276*/
 
 %{
 #include "hash.h"
 #include "tokens.h"
 #include "aux.h"
-#include "main.h"
+#include "main.c"
 %}
 
 %option yylineno
