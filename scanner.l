@@ -1,17 +1,20 @@
-/// Diego Dasso Migotto 00242243
-/// Vilmar Neto
+/* Diego Dasso Migotto 00242243
+   Vilmar Neto 00000000*/
 
 %{
 #include "hash.h"
 #include "tokens.h"
 #include "aux.h"
+#include "main.h"
 %}
 
 %option yylineno
 
 %%
 
-/// Palavras reservadas
+\n 
+
+ /* Palavras reservadas */
 char { return KW_CHAR; } 
 int { return KW_INT; }
 float { return KW_FLOAT; }
@@ -24,10 +27,10 @@ read { return KW_READ; }
 print { return KW_PRINT; }
 return { return KW_RETURN; }
 
-/// Caracteres especiais
+ /* Caracteres especiais */
 (,|;|:|\(|\)|\[|\]|\{|\}|\+|\-|\*|\/|<|>|=|!|&|\$|\%|#) { return (int) yytext[0]; }
 
-/// Operadores compostos
+ /* Operadores compostos */
 \<= { return OPERATOR_LE; }
 \>= { return OPERATOR_GE; }
 == { return OPERATOR_EQ; }
@@ -35,22 +38,22 @@ return { return KW_RETURN; }
 && { return OPERATOR_AND; }
 \|\| { return OPERATOR_OR; }
 
-/// Identificadores
-([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0..9])* {  return TK_IDENTIFIER; }
-
-/// Literais
+ /* Literais */
 [0..9]+ { return LIT_INTEGER; }
 [0..9]+\.[0..9]+ { return LIT_REAL; }
 '.' { return LIT_CHAR; }
 \"(\\.|[^"])*\" { return LIT_STRING; }
 
-/// Comentarios
+ /* Identificadores */
+([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0..9])* {  return TK_IDENTIFIER; }
+
+ /* Comentarios e Espacos */
 
 "//".*
 [ \t\r]+
 "/*"(.|\n)*"*/"
 
-/// Erro
+ /* Erro */
 
 . { return TOKEN_ERROR; }
 
