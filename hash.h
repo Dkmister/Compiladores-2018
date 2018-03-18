@@ -1,7 +1,7 @@
 #ifndef __hash__
 #define __hash__
 
-#define SIZE 997
+#define HASH_SIZE 997
 /*
 Header da Tabela Hash, autoria de Marcelo Johann 2018 
 */
