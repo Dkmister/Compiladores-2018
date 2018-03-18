@@ -27,6 +27,14 @@ return { return KW_RETURN; }
 /// Caracteres especiais
 (,|;|:|\(|\)|\[|\]|\{|\}|\+|\-|\*|\/|<|>|=|!|&|\$|\%|#) { return (int) yytext[0]; }
 
+/// Operadores compostos
+\<= { return OPERATOR_LE; }
+\>= { return OPERATOR_GE; }
+== { return OPERATOR_EQ; }
+!= { return OPERATOR_NE; }
+&& { return OPERATOR_AND; }
+\|\| { return OPERATOR_OR; }
+
 %%
 
 int getLineNumber(void) { return yylineno; }
