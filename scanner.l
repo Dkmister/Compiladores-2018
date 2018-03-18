@@ -56,4 +56,14 @@ return { return KW_RETURN; }
 
 %%
 
+// Execution control var
+int runningVar = 1;
+
+// Returns line number
 int getLineNumber(void) { return yylineno; }
+
+// Called when reach eof, set control var to 0
+int yywrap(void) { runningVar = 0; return 1; }
+
+// Returns true for running and false for finished
+int isRunning(void) { return runningVar; }
