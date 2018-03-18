@@ -44,6 +44,16 @@ return { return KW_RETURN; }
 '.' { return LIT_CHAR; }
 \"(\\.|[^"])*\" { return LIT_STRING; }
 
+/// Comentarios
+
+"//".*
+[ \t\r]+
+"/*"(.|\n)*"*/"
+
+/// Erro
+
+. { return TOKEN_ERROR; }
+
 %%
 
 int getLineNumber(void) { return yylineno; }
