@@ -11,10 +11,10 @@
 
 %%
 
-\n 
+\n
 
  /* Palavras reservadas */
-char { return KW_CHAR; } 
+char { return KW_CHAR; }
 int { return KW_INT; }
 float { return KW_FLOAT; }
 if { return KW_IF; }
@@ -44,7 +44,7 @@ return { return KW_RETURN; }
 \"(\\.|[^"])*\" { hashInsert(LT_STRING, yytext); return LIT_STRING; }
 
  /* Identificadores */
-([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0..9])* { hashInsert(LT_IDENT, yytext); return TK_IDENTIFIER; }
+([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0-9])* { hashInsert(LT_IDENT, yytext); return TK_IDENTIFIER; }
 
  /* Comentarios e Espacos */
 
@@ -61,4 +61,3 @@ return { return KW_RETURN; }
 
 // Called when reach eof, set control var to 0
 int yywrap(void) { foundEof(); return 1; }
-

@@ -7,7 +7,7 @@ HASH* Table[HASH_SIZE];
 void hashInit(void)
 {
   int i ;
-   
+
   for (i=0;i<HASH_SIZE;++i)
      Table[i] = 0 ;
 }
@@ -55,11 +55,10 @@ HASH* hashInsert(int type, char *text)
 void hashPrint(void)
 {
   int i;
-  
+
   HASH *node;
- 
+
   for(i=0;i<HASH_SIZE;i++)
-    for(node = Table[i];node;node->next)
+    for(node = Table[i];node;node = node->next)
       printf("Table [%d] has %s\n",i,node->text);
 }
-
