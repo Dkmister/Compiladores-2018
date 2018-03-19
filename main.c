@@ -18,7 +18,7 @@ int main(int argc, char **argv)
   {
 
     token = yylex();
-    printf("Line number: %d ;", getLineNumber());
+    printf("Line number: %d ; Token: %d ; \n", getLineNumber(), token);
 
   }
   return 0;
