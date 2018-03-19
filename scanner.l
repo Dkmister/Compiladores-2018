@@ -5,7 +5,6 @@
 #include "hash.h"
 #include "tokens.h"
 #include "aux.h"
-#include "main.c"
 %}
 
 %option yylineno
@@ -40,7 +39,7 @@ return { return KW_RETURN; }
 
  /* Literais */
 [0..9]+ { return LIT_INTEGER; }
-[0..9]+\.[0..9]+ { return LIT_REAL; }
+-?(([0-9]+)|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?) { return LIT_REAL; }
 '.' { return LIT_CHAR; }
 \"(\\.|[^"])*\" { return LIT_STRING; }
 
@@ -58,7 +57,7 @@ return { return KW_RETURN; }
 . { return TOKEN_ERROR; }
 
 %%
-
+#include "main.c"
 // Returns line number
 int getLineNumber(void) { return yylineno; }
 
