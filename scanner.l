@@ -57,9 +57,7 @@ return { return KW_RETURN; }
 . { return TOKEN_ERROR; }
 
 %%
-#include "main.c"
-// Returns line number
-int getLineNumber(void) { return yylineno; }
+#include "main.h"
 
 // Called when reach eof, set control var to 0
 int yywrap(void) { foundEof(); return 1; }
