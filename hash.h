@@ -3,7 +3,7 @@
 
 #define HASH_SIZE 997
 /*
-Header da Tabela Hash, autoria de Marcelo Johann 2018 
+Header da Tabela Hash, autoria de Marcelo Johann 2018
 */
 
 typedef struct hash_node{
@@ -15,6 +15,7 @@ typedef struct hash_node{
 void hashInit(void);
 int hashAddress(char *text);
 HASH* hashInsert(int type, char *text);
+HASH * hashFind(char *text);
 void hashPrint(void);
 
 

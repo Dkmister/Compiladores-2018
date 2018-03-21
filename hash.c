@@ -51,6 +51,20 @@ HASH* hashInsert(int type, char *text)
 }
 
 
+HASH *hashFind(char *text){
+
+  int address;
+
+  HASH *node = 0;
+
+  address = hashAddress(text);
+  for(node = Table[address];node;node = node->next)
+    if(!strcmp(text,node->text))
+      return node;
+
+  return 0;
+}
+
 
 void hashPrint(void)
 {
