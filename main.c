@@ -14,9 +14,9 @@ int main(int argc, char **argv)
     exit(1);
   }
 
-  if( (yyin = fopen(argv[1]),"r") == 0)
+  if( (yyin = (fopen((argv[1]),"r") == 0) ) )
   {
-    fprintf("Nao pode abrir o arquivo %s, caramba >:( ",argv[1]);
+   fprintf("Nao pode abrir o arquivo %s, caramba >:( ",argv[1]);
     exit(2);
   }
 
