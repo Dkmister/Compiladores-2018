@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 
   if( (yyin = (fopen((argv[1]),"r") == 0) ) )
   {
-   fprintf("Nao pode abrir o arquivo %s, caramba >:( ",argv[1]);
+    printf("Nao pode abrir o arquivo %s, caramba >:( ",argv[1]);
     exit(2);
   }
 
