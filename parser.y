@@ -69,8 +69,40 @@ Fun_Com_Parametros: Fun_Com_Parametros','Parametro
 Parametro: Tipo TK_IDENTIFIER
 
 Fun_Corpo: Bloco
-Bloco: '{' '}'
 
+/* Comando_Simples */
+
+Lista_Comandos: Comando_Simples
+Lista_Comandos: Lista_Comandos';' Comando_Simples
+
+Comando_Simples: 
+Comando_Simples: Bloco
+Comando_Simples: Atribuicao
+/*Comando_Simples: If
+Comando_Simples: If_Else
+Comando_Simples: While
+Comando_Simples: For*/
+Comando_Simples: Read
+Comando_Simples: Print
+Comando_Simples: Return
+
+Bloco: '{' Lista_Comandos '}'
+
+Atribuicao: TK_IDENTIFIER OPERATOR_EQ Expressao
+Atribuicao: TK_IDENTIFIER'['Expressao']' OPERATOR_EQ Expressao
+
+Read: KW_READ TK_IDENTIFIER
+
+Print: KW_PRINT Lista_Print
+Lista_Print: Printavel
+Lista_Print: Lista_Print Printavel
+Printavel: Expressao
+Printavel: LIT_STRING
+
+Return: KW_RETURN Expressao
+
+/* Expressoes */
+Expressao: LIT_INTEGER
 
 /* Tipos */
 Tipo: KW_CHAR
