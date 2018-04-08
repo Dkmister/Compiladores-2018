@@ -62,14 +62,14 @@ De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'
 De_Funcoes: Fun_Cabecalho Fun_Corpo
 
 Fun_Cabecalho: Tipo TK_IDENTIFIER '('Fun_Parametros')'
-Fun_Parametros:
+Fun_Parametros: 
 Fun_Parametros: Fun_Com_Parametros
 Fun_Com_Parametros: Parametro
-Fun_Com_Parametros Fun_Com_Parametros','Parametro
+Fun_Com_Parametros: Fun_Com_Parametros','Parametro
 Parametro: Tipo TK_IDENTIFIER
 
 Fun_Corpo: Bloco
-Bloco:
+Bloco: '{' '}'
 
 
 /* Tipos */
