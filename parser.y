@@ -8,6 +8,8 @@ int yydebug = 1;
 
 %}
 
+%define parse.error verbose
+
 /* Declaracao de tokens */
 
 %token KW_CHAR

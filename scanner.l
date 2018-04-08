@@ -3,8 +3,9 @@
 
 %{
 #include "hash.h"
-#include "tokens.h"
 #include "aux.h"
+#include "main.h"
+#include "parser.h"
 %}
 
 %option yylineno

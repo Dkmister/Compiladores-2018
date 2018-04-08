@@ -7,8 +7,6 @@ int main(int argc, char **argv)
 
   int token = 0;
 
-
-
   if (argc<2){
     fprintf(stderr,"Chame pelamor de Deus : etapa1 nome_do_arquivo.\n ");
     exit(1);
@@ -22,12 +20,13 @@ int main(int argc, char **argv)
 
   initMe();
 
-  while(isRunning())
+  /*while(isRunning())
   {
 
     token = yylex();
     printf("Linha numero: %d ;\r Token: %d ; \n", getLineNumber(), token);
 
-  }
+  }*/
+
   return 0;
 }

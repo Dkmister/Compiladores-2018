@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 /// Variables
 
 // Execution control var
@@ -16,6 +19,9 @@ void foundEof(void);
 
 // Returns line number of Lex
 int getLineNumber(void);
+
+// YYPARSE ERROR, retorna mensagem de erro e exit(3)
+void yyerror (char const *mensagem);
 
 // Lex function declaration
 
