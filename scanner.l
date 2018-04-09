@@ -23,6 +23,7 @@ then { return KW_THEN; }
 else { return KW_ELSE; }
 while { return KW_WHILE; }
 for { return KW_FOR; }
+to { return KW_TO; }
 read { return KW_READ; }
 print { return KW_PRINT; }
 return { return KW_RETURN; }

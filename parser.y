@@ -23,6 +23,7 @@ extern int yyparse(void);
 %token KW_ELSE
 %token KW_WHILE
 %token KW_FOR
+%token KW_TO
 %token KW_READ
 %token KW_RETURN
 %token KW_PRINT
@@ -92,8 +93,8 @@ Comando_Simples: Bloco
 Comando_Simples: Atribuicao
 /*Comando_Simples: If
 Comando_Simples: If_Else
-Comando_Simples: While
-Comando_Simples: For*/
+Comando_Simples: While*/
+Comando_Simples: For
 Comando_Simples: Read
 Comando_Simples: Print
 Comando_Simples: Return
@@ -102,6 +103,8 @@ Bloco: '{' Lista_Comandos '}'
 
 Atribuicao: TK_IDENTIFIER '=' Expressao
 Atribuicao: TK_IDENTIFIER'['Expressao']' '=' Expressao
+
+For: KW_FOR '(' TK_IDENTIFIER '=' Expressao KW_TO Expressao ')' Comando_Simples
 
 Read: KW_READ TK_IDENTIFIER
 
