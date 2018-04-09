@@ -46,8 +46,6 @@ extern int yyparse(void);
 
 %right KW_THEN KW_ELSE
 
-%right '[' '('
-
 %%
 
 /* Linguagem lang182 */
@@ -82,7 +80,7 @@ Parametro: Tipo TK_IDENTIFIER
 
 Fun_Corpo: Bloco
 
-Fun_Chamada: TK_IDENTIFIER '('Fun_Cha_Parametros')'
+Fun_Chamada: TK_IDENTIFIER'('Fun_Cha_Parametros')'
 Fun_Cha_Parametros:
 Fun_Cha_Parametros: Fun_Cha_Com_Parametros
 Fun_Cha_Com_Parametros: Cha_Parametro
@@ -129,28 +127,31 @@ Printavel: LIT_STRING
 Return: KW_RETURN Expressao
 
 /* Expressoes */
-Expressao: LIT_INTEGER
-Expressao: LIT_CHAR
-Expressao: '#'TK_IDENTIFIER
-Expressao: '&'TK_IDENTIFIER
-Expressao: TK_IDENTIFIER'['Expressao']'
-Expressao: Fun_Chamada
-Expressao: TK_IDENTIFIER
+Expressao: Operando
 Expressao: '(' Expressao ')'
-Expressao: Expressao Operando Expressao
-Operando: '+'
-Operando: '-'
-Operando: '*'
-Operando: '/'
-Operando: '<'
-Operando: '>'
-Operando: '!'
-Operando: OPERATOR_LE
-Operando: OPERATOR_GE
-Operando: OPERATOR_EQ
-Operando: OPERATOR_NE
-Operando: OPERATOR_AND
-Operando: OPERATOR_OR
+Expressao: Expressao Operador Expressao
+
+Operando: LIT_INTEGER
+Operando: LIT_CHAR
+Operando: TK_IDENTIFIER
+Operando: '#'TK_IDENTIFIER
+Operando: '&'TK_IDENTIFIER
+Operando: TK_IDENTIFIER'['Expressao']'
+Operando: Fun_Chamada
+
+Operador: '+'
+Operador: '-'
+Operador: '*'
+Operador: '/'
+Operador: '<'
+Operador: '>'
+Operador: '!'
+Operador: OPERATOR_LE
+Operador: OPERATOR_GE
+Operador: OPERATOR_EQ
+Operador: OPERATOR_NE
+Operador: OPERATOR_AND
+Operador: OPERATOR_OR
 
 /* Tipos */
 Tipo: KW_CHAR
