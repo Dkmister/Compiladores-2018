@@ -42,6 +42,12 @@ extern int yyparse(void);
 %token LIT_STRING
 %token TOKEN_ERROR
 
+%right OPERATOR_AND OPERATOR_OR '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPEATOR_NE '+' '-' '*' '/'
+
+%right KW_THEN KW_ELSE
+
+%right '[' '('
+
 %%
 
 /* Linguagem lang182 */
@@ -91,9 +97,9 @@ Lista_Comandos: Lista_Comandos';' Comando_Simples
 Comando_Simples: 
 Comando_Simples: Bloco
 Comando_Simples: Atribuicao
-/*Comando_Simples: If
-Comando_Simples: If_Else
-Comando_Simples: While*/
+Comando_Simples: If
+Comando_Simples: If_Else 
+Comando_Simples: While
 Comando_Simples: For
 Comando_Simples: Read
 Comando_Simples: Print
@@ -103,6 +109,12 @@ Bloco: '{' Lista_Comandos '}'
 
 Atribuicao: TK_IDENTIFIER '=' Expressao
 Atribuicao: TK_IDENTIFIER'['Expressao']' '=' Expressao
+
+If: KW_IF '(' Expressao ')' KW_THEN Comando_Simples
+
+If_Else: KW_IF '(' Expressao ')' KW_THEN Comando_Simples KW_ELSE Comando_Simples
+
+While: KW_WHILE '(' Expressao ')' Comando_Simples
 
 For: KW_FOR '(' TK_IDENTIFIER '=' Expressao KW_TO Expressao ')' Comando_Simples
 
@@ -119,11 +131,11 @@ Return: KW_RETURN Expressao
 /* Expressoes */
 Expressao: LIT_INTEGER
 Expressao: LIT_CHAR
-Expressao: TK_IDENTIFIER
 Expressao: '#'TK_IDENTIFIER
 Expressao: '&'TK_IDENTIFIER
 Expressao: TK_IDENTIFIER'['Expressao']'
 Expressao: Fun_Chamada
+Expressao: TK_IDENTIFIER
 Expressao: '(' Expressao ')'
 Expressao: Expressao Operando Expressao
 Operando: '+'
