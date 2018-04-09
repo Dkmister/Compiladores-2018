@@ -6,6 +6,7 @@
 #include "aux.h"
 #include "main.h"
 #include "parser.tab.h"
+extern YYSTYPE yylval;
 %}
 
 %option yylineno
@@ -40,13 +41,13 @@ return { return KW_RETURN; }
 \|\| { return OPERATOR_OR; }
 
  /* Literais */
-[0-9]+ { hashInsert(LT_INT, yytext); return LIT_INTEGER; }
-[0-9]+\.[0-9]+ { hashInsert(LT_FLOAT, yytext); return LIT_REAL; }
-'.' { hashInsert(LT_CHAR, yytext); return LIT_CHAR; }
-\"(\\.|[^"])*\" { hashInsert(LT_STRING, yytext); return LIT_STRING; }
+[0-9]+ { yylval.node = hashInsert(LT_INT, yytext); return LIT_INTEGER; }
+[0-9]+\.[0-9]+ { yylval.node = hashInsert(LT_FLOAT, yytext); return LIT_REAL; }
+'.' { yylval.node = hashInsert(LT_CHAR, yytext); return LIT_CHAR; }
+\"(\\.|[^"])*\" { yylval.node = hashInsert(LT_STRING, yytext); return LIT_STRING; }
 
  /* Identificadores */
-([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0-9])* { hashInsert(LT_IDENT, yytext); return TK_IDENTIFIER; }
+([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0-9])* { yylval.node = hashInsert(LT_IDENT, yytext); return TK_IDENTIFIER; }
 
  /* Comentarios e Espacos */
 

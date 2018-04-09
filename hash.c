@@ -42,6 +42,8 @@ HASH* hashInsert(int type, char *text)
 
   strcpy(newnode->text,text);
 
+  newnode->type = type;
+
   newnode->next = Table[address];
 
   Table[address] = newnode;

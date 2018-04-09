@@ -3,12 +3,16 @@
 
 %{
 #include "main.h"
+#include "hash.h"
 int yydebug = 1;
 
 extern int yyparse(void);
 
-
 %}
+
+%union {
+  HASH* node;
+}
 
 %define parse.error verbose
 %defines
@@ -41,6 +45,8 @@ extern int yyparse(void);
 %token LIT_CHAR
 %token LIT_STRING
 %token TOKEN_ERROR
+
+%type<node> LIT_INTEGER LIT_REAL LIT_CHAR LIT_STRING TK_IDENTIFIER
 
 %right OPERATOR_AND OPERATOR_OR '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPEATOR_NE '+' '-' '*' '/' '!'
 
