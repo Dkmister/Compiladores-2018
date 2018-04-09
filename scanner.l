@@ -5,7 +5,7 @@
 #include "hash.h"
 #include "aux.h"
 #include "main.h"
-#include "parser.h"
+#include "parser.tab.h"
 %}
 
 %option yylineno

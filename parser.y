@@ -3,12 +3,15 @@
 
 %{
 #include "main.h"
-
 int yydebug = 1;
+
+extern int yyparse(void);
+
 
 %}
 
 %define parse.error verbose
+%defines
 
 /* Declaracao de tokens */
 
@@ -52,8 +55,8 @@ Declaracoes: De_Funcoes
 /* Declaracoes Globais */
 
 De_Globais: De_Glo_Var_Simples
-De_Glo_Var_Simples: Tipo TK_IDENTIFIER OPERATOR_EQ Valor
-De_Glo_Var_Simples: Tipo '#'TK_IDENTIFIER OPERATOR_EQ Valor
+De_Glo_Var_Simples: Tipo TK_IDENTIFIER '=' Valor
+De_Glo_Var_Simples: Tipo '#'TK_IDENTIFIER '=' Valor
 
 De_Globais: De_Glo_Var_Vetor
 De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'':' Valores
@@ -90,8 +93,8 @@ Comando_Simples: Return
 
 Bloco: '{' Lista_Comandos '}'
 
-Atribuicao: TK_IDENTIFIER OPERATOR_EQ Expressao
-Atribuicao: TK_IDENTIFIER'['Expressao']' OPERATOR_EQ Expressao
+Atribuicao: TK_IDENTIFIER '=' Expressao
+Atribuicao: TK_IDENTIFIER'['Expressao']' '=' Expressao
 
 Read: KW_READ TK_IDENTIFIER
 

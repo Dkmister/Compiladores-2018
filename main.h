@@ -3,5 +3,3 @@
 #include "aux.h"
 #include "hash.h"
 
-
-int yylex(void);
