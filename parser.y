@@ -135,9 +135,13 @@ Printavel: LIT_STRING
 Return: KW_RETURN Expressao
 
 /* Expressoes */
-Expressao: Operando
+Expressao: Op_Final
 Expressao: '(' Expressao ')'
 Expressao: Expressao Operador Expressao
+
+Op_Final: Operando
+Op_Final: '-'Operando
+Op_Final: '!'Operando
 
 Operando: LIT_INTEGER
 Operando: LIT_CHAR
@@ -153,7 +157,6 @@ Operador: '*'
 Operador: '/'
 Operador: '<'
 Operador: '>'
-Operador: '!'
 Operador: OPERATOR_LE
 Operador: OPERATOR_GE
 Operador: OPERATOR_EQ
