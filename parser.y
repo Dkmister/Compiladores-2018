@@ -42,9 +42,11 @@ extern int yyparse(void);
 %token LIT_STRING
 %token TOKEN_ERROR
 
-%right OPERATOR_AND OPERATOR_OR '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPEATOR_NE '+' '-' '*' '/'
+%right OPERATOR_AND OPERATOR_OR '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPEATOR_NE '+' '-' '*' '/' '!'
 
 %right KW_THEN KW_ELSE
+
+%right '[' '(' TK_IDENTIFIER
 
 %%
 
