@@ -162,8 +162,8 @@ Expressao: Expressao OPERATOR_EQ Expressao
 Expressao: Expressao OPERATOR_NE Expressao
 Expressao: Expressao OPERATOR_AND Expressao
 Expressao: Expressao OPERATOR_OR Expressao
-Expressao: '-'Expressao
 Expressao: '!'Expressao
+Expressao: '(''-'Expressao')'
 
 Operando: LIT_INTEGER
 Operando: LIT_CHAR
