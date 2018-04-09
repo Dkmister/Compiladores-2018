@@ -62,7 +62,7 @@ De_Globais: De_Glo_Var_Vetor
 De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'':' Valores
 De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'
 
-/* Declaracoes Funcoes */
+/* Declaracoes Funcoes + Chamada Funcoes */
 
 De_Funcoes: Fun_Cabecalho Fun_Corpo
 
@@ -74,6 +74,13 @@ Fun_Com_Parametros: Fun_Com_Parametros','Parametro
 Parametro: Tipo TK_IDENTIFIER
 
 Fun_Corpo: Bloco
+
+Fun_Chamada: TK_IDENTIFIER '('Fun_Cha_Parametros')'
+Fun_Cha_Parametros:
+Fun_Cha_Parametros: Fun_Cha_Com_Parametros
+Fun_Cha_Com_Parametros: Cha_Parametro
+Fun_Cha_Com_Parametros: Fun_Cha_Com_Parametros','Cha_Parametro
+Cha_Parametro: Expressao
 
 /* Comando_Simples */
 
@@ -108,6 +115,27 @@ Return: KW_RETURN Expressao
 
 /* Expressoes */
 Expressao: LIT_INTEGER
+Expressao: LIT_CHAR
+Expressao: TK_IDENTIFIER
+Expressao: '#'TK_IDENTIFIER
+Expressao: '&'TK_IDENTIFIER
+Expressao: TK_IDENTIFIER'['Expressao']'
+Expressao: Fun_Chamada
+Expressao: '(' Expressao ')'
+Expressao: Expressao Operando Expressao
+Operando: '+'
+Operando: '-'
+Operando: '*'
+Operando: '/'
+Operando: '<'
+Operando: '>'
+Operando: '!'
+Operando: OPERATOR_LE
+Operando: OPERATOR_GE
+Operando: OPERATOR_EQ
+Operando: OPERATOR_NE
+Operando: OPERATOR_AND
+Operando: OPERATOR_OR
 
 /* Tipos */
 Tipo: KW_CHAR
