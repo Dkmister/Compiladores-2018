@@ -48,11 +48,23 @@ extern int yyparse(void);
 
 %type<node> LIT_INTEGER LIT_REAL LIT_CHAR LIT_STRING TK_IDENTIFIER
 
-%right OPERATOR_AND OPERATOR_OR '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPEATOR_NE '+' '-' '*' '/' '!'
+%left OPERATOR_AND OPERATOR_OR
 
-%right KW_THEN KW_ELSE
+%left OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_NE
 
-%right '[' '(' TK_IDENTIFIER
+%left '<' '>' '!'
+
+%left '*' '/'  
+
+%left '+' '-'
+
+%left KW_THEN
+
+%left KW_ELSE
+
+%left TK_IDENTIFIER
+
+%left '[' '(' 
 
 %%
 
@@ -135,13 +147,23 @@ Printavel: LIT_STRING
 Return: KW_RETURN Expressao
 
 /* Expressoes */
-Expressao: Op_Final
+Expressao: Operando
 Expressao: '(' Expressao ')'
-Expressao: Expressao Operador Expressao
 
-Op_Final: Operando
-Op_Final: '-'Operando
-Op_Final: '!'Operando
+Expressao: Expressao '+' Expressao
+Expressao: Expressao '-' Expressao
+Expressao: Expressao '*' Expressao
+Expressao: Expressao '/' Expressao
+Expressao: Expressao '<' Expressao
+Expressao: Expressao '>' Expressao
+Expressao: Expressao OPERATOR_LE Expressao
+Expressao: Expressao OPERATOR_GE Expressao
+Expressao: Expressao OPERATOR_EQ Expressao
+Expressao: Expressao OPERATOR_NE Expressao
+Expressao: Expressao OPERATOR_AND Expressao
+Expressao: Expressao OPERATOR_OR Expressao
+Expressao: '-'Expressao
+Expressao: '!'Expressao
 
 Operando: LIT_INTEGER
 Operando: LIT_CHAR
@@ -150,19 +172,6 @@ Operando: '#'TK_IDENTIFIER
 Operando: '&'TK_IDENTIFIER
 Operando: TK_IDENTIFIER'['Expressao']'
 Operando: Fun_Chamada
-
-Operador: '+'
-Operador: '-'
-Operador: '*'
-Operador: '/'
-Operador: '<'
-Operador: '>'
-Operador: OPERATOR_LE
-Operador: OPERATOR_GE
-Operador: OPERATOR_EQ
-Operador: OPERATOR_NE
-Operador: OPERATOR_AND
-Operador: OPERATOR_OR
 
 /* Tipos */
 Tipo: KW_CHAR
