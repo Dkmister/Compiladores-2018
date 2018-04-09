@@ -1,5 +1,5 @@
 #
-# UFRGS - Compiladores B - Marcelo Johann - 2009/2 - Etapa 1
+# UFRGS - Compiladores B - Marcelo Johann - 2009/2 - Etapa 2
 #
 # Makefile for three compiler calls
 # Read the comments on Makefile2. All of them apply here too.
@@ -8,7 +8,7 @@
 #
 
 etapa2: parser.tab.o lex.yy.o main.o hash.o aux.o
-	gcc -o etapa1 parser.tab.o lex.yy.o main.o hash.o aux.o
+	gcc -o etapa2 parser.tab.o lex.yy.o main.o hash.o aux.o
 main.o: main.c
 	gcc -c main.c
 hash.o: hash.c
@@ -24,4 +24,4 @@ parser.tab.o: parser.tab.c
 parser.tab.c: parser.y
 	bison -d -v parser.y
 clean:
-	rm *.o lex.yy.c etapa1 parser.tab.c parser.tab.h parser.output lex.yy.h
+	rm *.o lex.yy.c etapa2 parser.tab.c parser.tab.h parser.output lex.yy.h
