@@ -37,12 +37,15 @@
 typedef struct ast_node{
   int type;
   HASH* hash_pointer;
-  struct ast_node* son[4];
+  struct ast_node* son1;
+  struct ast_node* son2;
+  struct ast_node* son3;
+  struct ast_node* son4;
 }AST;
 
 AST* main_node;
 
-AST* new_ast(int type, HASH* hash_pointer, AST* son1, AST* son2, AST* son3, AST* son4);
+AST* new_ast(int type);
 
 AST* add_node(AST* father, AST* son);
 

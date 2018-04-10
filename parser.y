@@ -51,7 +51,7 @@ extern AST* main_node;
 
 %type<node> LIT_INTEGER LIT_REAL LIT_CHAR LIT_STRING TK_IDENTIFIER
 
-%type<ast> Codigo
+%type<ast> Codigo Declaracoes De_Globais De_Funcoes De_Glo_Var_Simples De_Glo_Var_Vetor Fun_Cabecalho Fun_Corpo Fun_Parametros Fun_Com_Parametros Parametro
 
 %left OPERATOR_AND OPERATOR_OR
 
@@ -76,34 +76,34 @@ extern AST* main_node;
 /* Linguagem lang182 */
 
 
-Codigo: 			{}
+Codigo: 			{ $$ = new_ast(T_PROGRAMA); }
 Codigo: Codigo Declaracoes	{}
 
-Declaracoes: De_Globais';'
-Declaracoes: De_Funcoes
+Declaracoes: De_Globais';'	{ $$ = $1; }
+Declaracoes: De_Funcoes		{ $$ = $1; }
 
 /* Declaracoes Globais */
 
-De_Globais: De_Glo_Var_Simples
-De_Glo_Var_Simples: Tipo TK_IDENTIFIER '=' Valor
-De_Glo_Var_Simples: Tipo '#'TK_IDENTIFIER '=' Valor
+De_Globais: De_Glo_Var_Simples						{ $$ = $1; }
+De_Glo_Var_Simples: Tipo TK_IDENTIFIER '=' Valor			{ $$ = new_ast(T_GLOBALS); }
+De_Glo_Var_Simples: Tipo '#'TK_IDENTIFIER '=' Valor			{ $$ = new_ast(T_GLOBALP); }
 
-De_Globais: De_Glo_Var_Vetor
-De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'':' Valores
-De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'
+De_Globais: De_Glo_Var_Vetor						{ $$ = $1; }
+De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'':' Valores	{ $$ = new_ast(T_GLOBALV); }
+De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'			{ $$ = new_ast(T_GLOBALV); }
 
 /* Declaracoes Funcoes + Chamada Funcoes */
 
-De_Funcoes: Fun_Cabecalho Fun_Corpo
+De_Funcoes: Fun_Cabecalho Fun_Corpo			{ $$ = new_ast(T_FUNCAO_D); $$->son1 = $1; $$->son2 = $1->son1; $1->son1 = NULL; $$->son3 = $2; }
 
-Fun_Cabecalho: Tipo TK_IDENTIFIER '('Fun_Parametros')'
-Fun_Parametros: 
-Fun_Parametros: Fun_Com_Parametros
-Fun_Com_Parametros: Parametro
-Fun_Com_Parametros: Fun_Com_Parametros','Parametro
-Parametro: Tipo TK_IDENTIFIER
+Fun_Cabecalho: Tipo TK_IDENTIFIER '('Fun_Parametros')'	{ $$ = new_ast(T_IDENTIFICADOR); $$->son1 = $4; }
+Fun_Parametros: 					{ $$ = NULL; }
+Fun_Parametros: Fun_Com_Parametros			{ $$ = $1; }
+Fun_Com_Parametros: Parametro				{ $$ = $1; }
+Fun_Com_Parametros: Fun_Com_Parametros','Parametro	{ $$ = $1; }
+Parametro: Tipo TK_IDENTIFIER				{ $$ = new_ast(T_IDENTIFICADOR); }
 
-Fun_Corpo: Bloco
+Fun_Corpo: Bloco					{ $$ = new_ast(T_BLOCO); }
 
 Fun_Chamada: TK_IDENTIFIER'('Fun_Cha_Parametros')'
 Fun_Cha_Parametros:
