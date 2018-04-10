@@ -15,7 +15,7 @@ typedef struct hash_node{
 void hashInit(void);
 int hashAddress(char* text);
 HASH* hashInsert(int type, char* text);
-HASH * hashFind(char* text);
+HASH* hashFind(char* text);
 void hashPrint(void);
 
 

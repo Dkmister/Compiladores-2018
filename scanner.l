@@ -2,6 +2,7 @@
    Vilmar Neto         00242276*/
 
 %{
+#include "ast.h"
 #include "hash.h"
 #include "aux.h"
 #include "main.h"

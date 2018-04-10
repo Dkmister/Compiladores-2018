@@ -4,14 +4,17 @@
 %{
 #include "main.h"
 #include "hash.h"
+#include "ast.h"
 int yydebug = 1;
 
 extern int yyparse(void);
+extern AST* main_node;
 
 %}
 
 %union {
   HASH* node;
+  AST* ast;
 }
 
 %define parse.error verbose
@@ -48,6 +51,8 @@ extern int yyparse(void);
 
 %type<node> LIT_INTEGER LIT_REAL LIT_CHAR LIT_STRING TK_IDENTIFIER
 
+%type<ast> Codigo
+
 %left OPERATOR_AND OPERATOR_OR
 
 %left OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_NE
@@ -71,8 +76,8 @@ extern int yyparse(void);
 /* Linguagem lang182 */
 
 
-Codigo: 
-Codigo: Codigo Declaracoes
+Codigo: 			{}
+Codigo: Codigo Declaracoes	{}
 
 Declaracoes: De_Globais';'
 Declaracoes: De_Funcoes
