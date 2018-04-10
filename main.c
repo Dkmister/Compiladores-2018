@@ -23,6 +23,9 @@ int main(int argc, char **argv)
   initMe();
 
   yyparse();
+  
+  /* HASH PRINT
+  hashPrint(); */
 
   return 0;
 }

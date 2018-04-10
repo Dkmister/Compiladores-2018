@@ -14,7 +14,7 @@ void hashInit(void)
 
 
 
-int hashAddress(char *text){
+int hashAddress(char* text){
 
   int address = 1;
 
@@ -28,11 +28,11 @@ int hashAddress(char *text){
 
 
 
-HASH* hashInsert(int type, char *text)
+HASH* hashInsert(int type, char* text)
 {
   int address;
 
-  HASH *newnode = 0;
+  HASH* newnode = 0;
 
   address = hashAddress(text);
 
@@ -53,7 +53,7 @@ HASH* hashInsert(int type, char *text)
 }
 
 
-HASH *hashFind(char *text){
+HASH* hashFind(char* text){
 
   int address;
 
@@ -72,7 +72,7 @@ void hashPrint(void)
 {
   int i;
 
-  HASH *node;
+  HASH* node;
 
   for(i=0;i<HASH_SIZE;i++)
     for(node = Table[i];node;node = node->next)

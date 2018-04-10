@@ -8,14 +8,14 @@ Header da Tabela Hash, autoria de Marcelo Johann 2018
 
 typedef struct hash_node{
   int type;
-  char *text;
-  struct hash_node *next;
+  char* text;
+  struct hash_node* next;
 }HASH;
 
 void hashInit(void);
-int hashAddress(char *text);
-HASH* hashInsert(int type, char *text);
-HASH * hashFind(char *text);
+int hashAddress(char* text);
+HASH* hashInsert(int type, char* text);
+HASH * hashFind(char* text);
 void hashPrint(void);
 
 
