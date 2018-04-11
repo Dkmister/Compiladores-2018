@@ -9,14 +9,15 @@ AST* new_ast(int type)
   node->son2 = NULL;
   node->son3 = NULL;
   node->son4 = NULL;
+  node->son5 = NULL;
 }
 
 void list_son(AST* father, AST* son)
 {
-  if (father->son4 == NULL)
-    father->son4 = son;
+  if (father->son5 == NULL)
+    father->son5 = son;
   else
-    list_son(father->son4, son);
+    list_son(father->son5, son);
 }
 
 void ast_print()
@@ -40,7 +41,8 @@ void node_print(AST* printme, int level)
   node_print(printme->son1, level+1);
   node_print(printme->son2, level+1);
   node_print(printme->son3, level+1);
-  node_print(printme->son4, level);
+  node_print(printme->son4, level+1);
+  node_print(printme->son5, level);
 }
 
 void print_name(int type)
@@ -169,6 +171,14 @@ void print_name(int type)
 
   case T_LITERAL:
     printf("LITERAL");
+    break;
+
+  case T_IDENTIFIC_D:
+    printf("REFERENCIA VAR");
+    break;
+
+  case T_IDENTIFIC_R:
+    printf("DERREFERE PTR");
     break;
   }
 }

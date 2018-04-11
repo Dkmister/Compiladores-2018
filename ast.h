@@ -35,6 +35,8 @@
 #define T_ANEG		28
 #define T_IDENTIFICADOR	29
 #define	T_LITERAL	30
+#define T_IDENTIFIC_D	31
+#define T_IDENTIFIC_R	32
 
 typedef struct ast_node{
   int type;
@@ -43,6 +45,7 @@ typedef struct ast_node{
   struct ast_node* son2;
   struct ast_node* son3;
   struct ast_node* son4;
+  struct ast_node* son5;
 }AST;
 
 AST* main_node;
