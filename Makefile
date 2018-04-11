@@ -26,4 +26,4 @@ parser.tab.o: parser.tab.c
 parser.tab.c: parser.y
 	bison -d -v parser.y
 clean:
-	rm *.o lex.yy.c etapa3 parser.tab.c parser.tab.h parser.output lex.yy.h
+	rm *.o lex.yy.c etapa3 parser.tab.c parser.tab.h parser.output lex.yy.h saida.txt

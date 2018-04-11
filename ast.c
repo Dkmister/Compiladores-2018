@@ -12,6 +12,13 @@ AST* new_ast(int type)
   node->son5 = NULL;
 }
 
+AST* new_ident_ast(HASH* pointer)
+{
+  AST* node = new_ast(T_IDENTIFICADOR);
+  node->hash_pointer = pointer;
+  return node;
+}
+
 void list_son(AST* father, AST* son)
 {
   if (father->son5 == NULL)
@@ -84,6 +91,20 @@ void node_tf(AST* node, int level, FILE *fp)
     node_tf(node->son5, level, fp);
     break; 
 
+  case T_GLOBALV:
+    fprintf(fp, "\nint ");
+    identificador_tf(node->son1, fp);
+    fprintf(fp, "[");
+    valor_tf(node->son1->son1, fp);
+    fprintf(fp, "]");
+    if (node->son2 != NULL) {
+      fprintf(fp,":");
+      lista_tf(node->son2, fp);
+    }
+    fprintf(fp, ";");
+    node_tf(node->son5, level, fp);
+    break; 
+
   }
 }
 
@@ -95,6 +116,15 @@ void identificador_tf(AST* node, FILE *fp)
 void valor_tf(AST* node, FILE *fp)
 {
   fprintf(fp, (char*)node->hash_pointer->text);
+}
+
+void lista_tf(AST* node, FILE *fp)
+{
+  if (node == NULL)
+    return;
+  fprintf(fp, " ");
+  valor_tf(node, fp);
+  lista_tf(node->son5, fp);
 }
 
 void print_name(int type)

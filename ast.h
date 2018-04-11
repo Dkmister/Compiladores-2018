@@ -52,6 +52,8 @@ AST* main_node;
 
 AST* new_ast(int type);
 
+AST* new_ident_ast(HASH* pointer);
+
 void list_son(AST* father, AST* son);
 
 void ast_print();
@@ -65,6 +67,8 @@ void node_tf(AST* node, int level, FILE *fp);
 void identificador_tf(AST* node, FILE *fp);
 
 void valor_tf(AST* node, FILE *fp);
+
+void lista_tf(AST* node, FILE *fp);
 
 void print_name(int type);
 
