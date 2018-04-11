@@ -49,6 +49,8 @@ AST* main_node;
 
 AST* new_ast(int type);
 
+void list_son(AST* father, AST* son);
+
 void ast_print();
 
 void node_print(AST* printme, int level);

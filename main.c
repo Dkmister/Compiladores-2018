@@ -27,5 +27,8 @@ int main(int argc, char **argv)
   /* HASH PRINT
   hashPrint(); */
 
+  /* AST PRINT */
+  ast_print();
+
   return 0;
 }

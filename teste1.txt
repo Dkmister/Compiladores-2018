@@ -1,0 +1,4 @@
+// UFRGS - Compiladores - Marcelo Johann - 2018/1
+
+int a = 0;
+int #a = 0;

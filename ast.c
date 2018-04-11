@@ -11,10 +11,19 @@ AST* new_ast(int type)
   node->son4 = NULL;
 }
 
+void list_son(AST* father, AST* son)
+{
+  if (father->son4 == NULL)
+    father->son4 = son;
+  else
+    list_son(father->son4, son);
+}
+
 void ast_print()
 {
-  printf("\n| IMPRESSAO A PARTIR DA RAIZ DA AST |\n\n");
+  printf("\n| IMPRESSAO A PARTIR DA RAIZ DA AST |\n");
   node_print(main_node, 0);
+  printf("\n\n| FIM DA IMPRESSAO |\n\n");
 }
 
 void node_print(AST* printme, int level)
@@ -22,15 +31,16 @@ void node_print(AST* printme, int level)
   if (printme == NULL)
     return;
 
-  for(int i = 0; i < level; i++)
+  printf("\n");
+  for(int i = 0; i <= level; i++)
     printf("  ");
-
-  printf("\n| ");
+  printf("| ");
   print_name(printme->type);
+
   node_print(printme->son1, level+1);
-  node_print(printme->son1, level+1);
-  node_print(printme->son1, level+1);
-  node_print(printme->son1, level+1);
+  node_print(printme->son2, level+1);
+  node_print(printme->son3, level+1);
+  node_print(printme->son4, level);
 }
 
 void print_name(int type)

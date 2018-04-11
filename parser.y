@@ -77,7 +77,7 @@ extern AST* main_node;
 
 
 Codigo: 			{ $$ = new_ast(T_PROGRAMA); main_node = $$; }
-Codigo: Codigo Declaracoes	{ $$ = $2; $$->son4 = $1; }
+Codigo: Codigo Declaracoes	{ $$ = $1; list_son($1, $2); }
 
 Declaracoes: De_Globais';'	{ $$ = $1; }
 Declaracoes: De_Funcoes		{ $$ = $1; }
@@ -102,7 +102,7 @@ Fun_Cabecalho: Tipo TK_IDENTIFIER '('Fun_Parametros')'	{ $$ = new_ast(T_IDENTIFI
 Fun_Parametros: 					{ $$ = NULL; }
 Fun_Parametros: Fun_Com_Parametros			{ $$ = $1; }
 Fun_Com_Parametros: Parametro				{ $$ = $1; }
-Fun_Com_Parametros: Fun_Com_Parametros','Parametro	{ $$ = $3; $$->son1 = $1;  }
+Fun_Com_Parametros: Fun_Com_Parametros','Parametro	{ $$ = $1; list_son($1, $3); }
 Parametro: Tipo TK_IDENTIFIER				{ $$ = new_ast(T_IDENTIFICADOR); }
 
 Fun_Corpo: Bloco					{ $$ = $1; }
@@ -187,7 +187,7 @@ Tipo: KW_FLOAT
 
 /* Literais */
 Valores: Valor { $$ = $1; }
-Valores: Valores Valor { $$ = $2; $$->son1 = $1; }
+Valores: Valores Valor { $$ = $1; list_son($1, $2); }
 
 Valor: LIT_INTEGER	{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
 Valor: LIT_REAL		{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
