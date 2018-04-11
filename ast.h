@@ -1,5 +1,7 @@
 #ifndef __ast__
 #include "hash.h"
+#include "stdio.h"
+#include "stdlib.h"
 #define __ast__
 
 #define T_PROGRAMA	0
@@ -47,8 +49,10 @@ AST* main_node;
 
 AST* new_ast(int type);
 
-AST* add_node(AST* father, AST* son);
+void ast_print();
 
-void ast_print(AST* printme);
+void node_print(AST* printme, int level);
+
+void print_name(int type);
 
 #endif

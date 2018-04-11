@@ -1,5 +1,5 @@
 #
-# UFRGS - Compiladores B - Marcelo Johann - 2009/2 - Etapa 2
+# UFRGS - Compiladores B - Marcelo Johann - 2009/2 - Etapa 3
 #
 # Makefile for three compiler calls
 # Read the comments on Makefile2. All of them apply here too.
@@ -7,8 +7,8 @@
 # Therefore, there must be a header of it to be included in scanner.l
 #
 
-etapa2: parser.tab.o lex.yy.o main.o hash.o aux.o ast.o
-	gcc -o etapa2 parser.tab.o lex.yy.o main.o hash.o aux.o ast.o
+etapa3: parser.tab.o lex.yy.o main.o hash.o aux.o ast.o
+	gcc -o etapa3 parser.tab.o lex.yy.o main.o hash.o aux.o ast.o
 main.o: main.c
 	gcc -c main.c
 ast.o: ast.c
@@ -26,4 +26,4 @@ parser.tab.o: parser.tab.c
 parser.tab.c: parser.y
 	bison -d -v parser.y
 clean:
-	rm *.o lex.yy.c etapa2 parser.tab.c parser.tab.h parser.output lex.yy.h
+	rm *.o lex.yy.c etapa3 parser.tab.c parser.tab.h parser.output lex.yy.h

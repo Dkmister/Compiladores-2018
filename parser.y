@@ -51,7 +51,7 @@ extern AST* main_node;
 
 %type<node> LIT_INTEGER LIT_REAL LIT_CHAR LIT_STRING TK_IDENTIFIER
 
-%type<ast> Codigo Declaracoes De_Globais De_Funcoes De_Glo_Var_Simples De_Glo_Var_Vetor Fun_Cabecalho Fun_Corpo Fun_Parametros Fun_Com_Parametros Parametro
+%type<ast> Codigo Declaracoes De_Globais De_Funcoes De_Glo_Var_Simples De_Glo_Var_Vetor Fun_Cabecalho Fun_Corpo Fun_Parametros Fun_Com_Parametros Parametro Valor Valores Bloco Lista_Comandos Comando_Simples
 
 %left OPERATOR_AND OPERATOR_OR
 
@@ -76,8 +76,8 @@ extern AST* main_node;
 /* Linguagem lang182 */
 
 
-Codigo: 			{ $$ = new_ast(T_PROGRAMA); }
-Codigo: Codigo Declaracoes	{}
+Codigo: 			{ $$ = new_ast(T_PROGRAMA); main_node = $$; }
+Codigo: Codigo Declaracoes	{ $$ = $2; $$->son4 = $1; }
 
 Declaracoes: De_Globais';'	{ $$ = $1; }
 Declaracoes: De_Funcoes		{ $$ = $1; }
@@ -85,12 +85,14 @@ Declaracoes: De_Funcoes		{ $$ = $1; }
 /* Declaracoes Globais */
 
 De_Globais: De_Glo_Var_Simples						{ $$ = $1; }
-De_Glo_Var_Simples: Tipo TK_IDENTIFIER '=' Valor			{ $$ = new_ast(T_GLOBALS); }
-De_Glo_Var_Simples: Tipo '#'TK_IDENTIFIER '=' Valor			{ $$ = new_ast(T_GLOBALP); }
+De_Glo_Var_Simples: Tipo TK_IDENTIFIER '=' Valor			{ $$ = new_ast(T_GLOBALS); $$->son1 = new_ast(T_IDENTIFICADOR); $$->son3 = $4; }
+De_Glo_Var_Simples: Tipo '#'TK_IDENTIFIER '=' Valor			{ $$ = new_ast(T_GLOBALP); $$->son1 = new_ast(T_IDENTIFICADOR); $$->son3 = $5; }
 
 De_Globais: De_Glo_Var_Vetor						{ $$ = $1; }
-De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'':' Valores	{ $$ = new_ast(T_GLOBALV); }
-De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'			{ $$ = new_ast(T_GLOBALV); }
+De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'':' Valores	
+				{ $$ = new_ast(T_GLOBALV); $$->son1 = new_ast(T_IDENTIFICADOR); $$->son2 = new_ast(T_LITERAL); $$->son3 = $7; }
+De_Glo_Var_Vetor: Tipo TK_IDENTIFIER'['LIT_INTEGER']'	
+				{ $$ = new_ast(T_GLOBALV); $$->son1 = new_ast(T_IDENTIFICADOR); $$->son2 = new_ast(T_LITERAL);; }
 
 /* Declaracoes Funcoes + Chamada Funcoes */
 
@@ -100,10 +102,10 @@ Fun_Cabecalho: Tipo TK_IDENTIFIER '('Fun_Parametros')'	{ $$ = new_ast(T_IDENTIFI
 Fun_Parametros: 					{ $$ = NULL; }
 Fun_Parametros: Fun_Com_Parametros			{ $$ = $1; }
 Fun_Com_Parametros: Parametro				{ $$ = $1; }
-Fun_Com_Parametros: Fun_Com_Parametros','Parametro	{ $$ = $1; }
+Fun_Com_Parametros: Fun_Com_Parametros','Parametro	{ $$ = $3; $$->son1 = $1;  }
 Parametro: Tipo TK_IDENTIFIER				{ $$ = new_ast(T_IDENTIFICADOR); }
 
-Fun_Corpo: Bloco					{ $$ = new_ast(T_BLOCO); }
+Fun_Corpo: Bloco					{ $$ = $1; }
 
 Fun_Chamada: TK_IDENTIFIER'('Fun_Cha_Parametros')'
 Fun_Cha_Parametros:
@@ -117,7 +119,7 @@ Cha_Parametro: Expressao
 Lista_Comandos: Comando_Simples
 Lista_Comandos: Lista_Comandos';' Comando_Simples
 
-Comando_Simples: 
+Comando_Simples: 		
 Comando_Simples: Bloco
 Comando_Simples: Atribuicao
 Comando_Simples: If
@@ -128,7 +130,7 @@ Comando_Simples: Read
 Comando_Simples: Print
 Comando_Simples: Return
 
-Bloco: '{' Lista_Comandos '}'
+Bloco: '{' Lista_Comandos '}' 								{ $$ = new_ast(T_BLOCO); $$->son1 = $2; }
 
 Atribuicao: TK_IDENTIFIER '=' Expressao
 Atribuicao: TK_IDENTIFIER'['Expressao']' '=' Expressao
@@ -184,13 +186,13 @@ Tipo: KW_INT
 Tipo: KW_FLOAT
 
 /* Literais */
-Valores: Valor
-Valores: Valores Valor
+Valores: Valor { $$ = $1; }
+Valores: Valores Valor { $$ = $2; $$->son1 = $1; }
 
-Valor: LIT_INTEGER
-Valor: LIT_REAL
-Valor: LIT_CHAR
-Valor: LIT_STRING
+Valor: LIT_INTEGER	{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
+Valor: LIT_REAL		{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
+Valor: LIT_CHAR		{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
+Valor: LIT_STRING	{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
 
 
 
