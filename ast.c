@@ -45,6 +45,58 @@ void node_print(AST* printme, int level)
   node_print(printme->son5, level);
 }
 
+void program_to_file(char *filename)
+{
+  FILE *fp;
+
+  fp = fopen(filename, "w");
+  fprintf(fp, "\\\\""File containing the generated code by decompiling the AST.\n");
+  node_tf(main_node, 0, fp);
+  fclose(fp);
+}
+
+void node_tf(AST* node, int level, FILE *fp)
+{
+  if (node == NULL)
+    return;
+
+  switch (node->type) {
+
+  case T_PROGRAMA:
+    node_tf(node->son5, level, fp);
+    break;
+
+  case T_GLOBALS:
+    fprintf(fp, "\nint ");
+    identificador_tf(node->son1, fp);
+    fprintf(fp," = ");
+    valor_tf(node->son2, fp);
+    fprintf(fp, ";");
+    node_tf(node->son5, level, fp);
+    break; 
+
+  case T_GLOBALP:
+    fprintf(fp, "\nint #");
+    identificador_tf(node->son1, fp);
+    fprintf(fp," = ");
+    valor_tf(node->son2, fp);
+    fprintf(fp, ";");
+    node_tf(node->son5, level, fp);
+    break; 
+
+  }
+}
+
+void identificador_tf(AST* node, FILE *fp)
+{
+  fprintf(fp, (char*)node->hash_pointer->text);
+}
+
+void valor_tf(AST* node, FILE *fp)
+{
+  fprintf(fp, (char*)node->hash_pointer->text);
+}
+
 void print_name(int type)
 {
   switch (type) {

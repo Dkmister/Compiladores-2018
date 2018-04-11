@@ -64,15 +64,9 @@ extern AST* main_node;
 
 %left '*' '/'  
 
-%left '+' '-'
+%left '+' '-' 
 
-%left KW_THEN
-
-%left KW_ELSE
-
-%left TK_IDENTIFIER
-
-%left '[' '(' 
+%right KW_THEN KW_ELSE
 
 %%
 
