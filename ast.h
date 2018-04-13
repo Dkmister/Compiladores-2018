@@ -38,8 +38,14 @@
 #define T_IDENTIFIC_D	31
 #define T_IDENTIFIC_R	32
 
+#define NOT_VAR		-1
+#define CHAR_VAR	1
+#define INT_VAR		2
+#define FLOAT_VAR	3
+
 typedef struct ast_node{
   int type;
+  int var_type;
   HASH* hash_pointer;
   struct ast_node* son1;
   struct ast_node* son2;

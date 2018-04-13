@@ -15,6 +15,7 @@ extern AST* main_node;
 %union {
   HASH* node;
   AST* ast;
+  int tipo_var;
 }
 
 %define parse.error verbose
@@ -50,6 +51,7 @@ extern AST* main_node;
 %token TOKEN_ERROR
 
 %type<node> LIT_INTEGER LIT_REAL LIT_CHAR LIT_STRING TK_IDENTIFIER
+%type<tipo_var> KW_CHAR KW_INT KW_FLOAT Tipo
 
 %type<ast> Codigo Declaracoes De_Globais De_Funcoes De_Glo_Var_Simples De_Glo_Var_Vetor 
 %type<ast> Fun_Cabecalho Fun_Corpo Fun_Parametros Fun_Com_Parametros Parametro Valor Valores Bloco Lista_Comandos Comando_Simples 
@@ -149,7 +151,7 @@ Read: KW_READ Identificador	{ $$ = new_ast(T_READ); $$->son1 = $2; }
 
 Print: KW_PRINT Lista_Print		{ $$ = new_ast(T_PRINT); $$->son1 = $2; }
 Lista_Print: Printavel			{ $$ = $1; }
-Lista_Print: Lista_Print Printavel	{ $$ = $1; list_son($1, $2); }
+Lista_Print: Lista_Print',' Printavel	{ $$ = $1; list_son($1, $3); }
 Printavel: Expressao			{ $$ = $1; }
 Printavel: LIT_STRING			{ $$ = $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
 
@@ -183,9 +185,9 @@ Operando: Identificador'['Expressao']'	{ $$ = $1; $$->son1 = $3; }
 Operando: Fun_Chamada			{ $$ = $1; }
 
 /* Tipos */
-Tipo: KW_CHAR
-Tipo: KW_INT
-Tipo: KW_FLOAT
+Tipo: KW_CHAR	{ $$ = CHAR_VAR; }
+Tipo: KW_INT	{ $$ = INT_VAR; }
+Tipo: KW_FLOAT	{ $$ = FLOAT_VAR; }
 
 /* Literais */
 Valores: Valor		{ $$ = $1; }

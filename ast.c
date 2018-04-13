@@ -110,12 +110,12 @@ void node_tf(AST* node, int level, FILE *fp)
 
 void identificador_tf(AST* node, FILE *fp)
 {
-  fprintf(fp, (char*)node->hash_pointer->text);
+  fprintf(fp, "%s", node->hash_pointer->text);
 }
 
 void valor_tf(AST* node, FILE *fp)
 {
-  fprintf(fp, (char*)node->hash_pointer->text);
+  fprintf(fp, "%s", node->hash_pointer->text);
 }
 
 void lista_tf(AST* node, FILE *fp)
