@@ -17,7 +17,7 @@ int main()
   i = #pt;
   v[2] = v[10-1];
   for (i = 1 to 10)
-    print i " ";
+    print i, " ";
 
   print " Digite um numero: \n";
   read i;
@@ -27,7 +27,7 @@ int main()
     i = i + 1
     };
 
-  print "Incrementado algumas vezes fica " a "\n";
+  print "Incrementado algumas vezes fica ", a, "\n";
   if (a==5) then 
     print "Parou no meio\n";
   if (a==11) then

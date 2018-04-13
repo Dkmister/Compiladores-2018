@@ -90,23 +90,23 @@ Declaracoes: De_Funcoes		{ $$ = $1; }
 /* Declaracoes Globais */
 
 De_Globais: De_Glo_Var_Simples						{ $$ = $1; }
-De_Glo_Var_Simples: Tipo Identificador '=' Valor			{ $$ = new_ast(T_GLOBALS); $$->son1 = $2; $$->son2 = $4; }
-De_Glo_Var_Simples: Tipo '#'Identificador '=' Valor			{ $$ = new_ast(T_GLOBALP); $$->son1 = $3; $$->son2 = $5; }
+De_Glo_Var_Simples: Tipo Identificador '=' Valor			{ $$ = new_ast(T_GLOBALS); $$->son1 = $2; $2->var_type = $1; $$->son2 = $4; }
+De_Glo_Var_Simples: Tipo '#'Identificador '=' Valor			{ $$ = new_ast(T_GLOBALP); $$->son1 = $3; $3->var_type = $1; $$->son2 = $5; }
 
 De_Globais: De_Glo_Var_Vetor						{ $$ = $1; }
-De_Glo_Var_Vetor: Tipo Identificador'['LIT_INTEGER']'':' Valores	{ $$ = new_ast(T_GLOBALV); $$->son1 = $2; $$->son1->son1 = new_ast(T_LITERAL); $$->son2 = $7; }
-De_Glo_Var_Vetor: Tipo Identificador'['LIT_INTEGER']'			{ $$ = new_ast(T_GLOBALV); $$->son1 = $2; $$->son1->son1 = new_ast(T_LITERAL);; }
+De_Glo_Var_Vetor: Tipo Identificador'['LIT_INTEGER']'':' Valores	{ $$ = new_ast(T_GLOBALV); $$->son1 = $2; $2->var_type = $1; $$->son1->son1 = new_ast(T_LITERAL); $$->son1->son1->hash_pointer = $4; $$->son2 = $7; }
+De_Glo_Var_Vetor: Tipo Identificador'['LIT_INTEGER']'			{ $$ = new_ast(T_GLOBALV); $$->son1 = $2; $2->var_type = $1; $$->son1->son1 = new_ast(T_LITERAL);; $$->son1->son1->hash_pointer = $4; }
 
 /* Declaracoes Funcoes + Chamada Funcoes */
 
 De_Funcoes: Fun_Cabecalho Fun_Corpo			{ $$ = new_ast(T_FUNCAO_D); $$->son1 = $1; $$->son2 = $2; }
 
-Fun_Cabecalho: Tipo Identificador '('Fun_Parametros')'	{ $$ = $2; $$->son1 = $4; }
+Fun_Cabecalho: Tipo Identificador '('Fun_Parametros')'	{ $$ = $2; $2->var_type = $1; $$->son1 = $4; }
 Fun_Parametros: 					{ $$ = NULL; }
 Fun_Parametros: Fun_Com_Parametros			{ $$ = $1; }
 Fun_Com_Parametros: Parametro				{ $$ = $1; }
 Fun_Com_Parametros: Fun_Com_Parametros','Parametro	{ $$ = $1; list_son($1, $3); }
-Parametro: Tipo Identificador				{ $$ = $2; }
+Parametro: Tipo Identificador				{ $$ = $2; $2->var_type = $1; }
 
 Fun_Corpo: Bloco					{ $$ = $1; }
 
@@ -144,8 +144,8 @@ If_Else: KW_IF '(' Expressao ')' KW_THEN Comando_Simples KW_ELSE Comando_Simples
 
 While: KW_WHILE '(' Expressao ')' Comando_Simples	{ $$ = new_ast(T_WHILE); $$->son1 = $3; $$->son2 = $5; }
 
-For: KW_FOR '(' Identificador '=' Expressao KW_TO Expressao ')' Comando_Simples 
-							{ $$ = new_ast(T_FOR); $$->son1 = $3; $$->son2 = $5; $$->son3 = $7; $$->son4 = $9; }
+For: KW_FOR '(' Identificador '=' Expressao KW_TO Expressao ')' Comando_Simples 	{ $$ = new_ast(T_FOR); $$->son1 = $3; $$->son2 = $5; $$->son3 = $7; 
+											  $$->son4 = $9; }
 
 Read: KW_READ Identificador	{ $$ = new_ast(T_READ); $$->son1 = $2; }
 

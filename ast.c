@@ -4,6 +4,7 @@ AST* new_ast(int type)
 {
   AST* node = malloc(sizeof(AST));
   node->type = type;
+  node->var_type = NOT_VAR;
   node->hash_pointer = NULL;
   node->son1 = NULL;
   node->son2 = NULL;
@@ -74,7 +75,9 @@ void node_tf(AST* node, int level, FILE *fp)
     break;
 
   case T_GLOBALS:
-    fprintf(fp, "\nint ");
+    fprintf(fp, "\n");
+    tipo_tf(node->son1, fp);
+    fprintf(fp, " ");
     identificador_tf(node->son1, fp);
     fprintf(fp," = ");
     valor_tf(node->son2, fp);
@@ -83,7 +86,9 @@ void node_tf(AST* node, int level, FILE *fp)
     break; 
 
   case T_GLOBALP:
-    fprintf(fp, "\nint #");
+    fprintf(fp, "\n");
+    tipo_tf(node->son1, fp);
+    fprintf(fp, " #");
     identificador_tf(node->son1, fp);
     fprintf(fp," = ");
     valor_tf(node->son2, fp);
@@ -92,7 +97,9 @@ void node_tf(AST* node, int level, FILE *fp)
     break; 
 
   case T_GLOBALV:
-    fprintf(fp, "\nint ");
+    fprintf(fp, "\n");
+    tipo_tf(node->son1, fp);
+    fprintf(fp, " ");
     identificador_tf(node->son1, fp);
     fprintf(fp, "[");
     valor_tf(node->son1->son1, fp);
@@ -104,6 +111,33 @@ void node_tf(AST* node, int level, FILE *fp)
     fprintf(fp, ";");
     node_tf(node->son5, level, fp);
     break; 
+
+  }
+}
+
+void tipo_tf(AST* node, FILE *fp)
+{
+  switch (node->var_type) {
+
+  case NOT_VAR:
+    fprintf(fp, "not_var");
+    break;
+
+  case CHAR_VAR:
+    fprintf(fp, "char");
+    break;
+
+  case INT_VAR:
+    fprintf(fp, "int");
+    break;
+
+  case FLOAT_VAR:
+    fprintf(fp, "float");
+    break;
+
+  default:
+    fprintf(fp, "error");
+    break;
 
   }
 }

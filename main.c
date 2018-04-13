@@ -45,7 +45,8 @@ int main(int argc, char **argv)
   ast_print();
 
   /* DECOMPILE */
-  program_to_file(argv[2]);
+  if (argc == 3)
+    program_to_file(argv[2]);
 
   return 0;
 }

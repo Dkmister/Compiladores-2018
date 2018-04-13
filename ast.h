@@ -70,6 +70,8 @@ void program_to_file(char *filename);
 
 void node_tf(AST* node, int level, FILE *fp);
 
+void tipo_tf(AST* node, FILE *fp);
+
 void identificador_tf(AST* node, FILE *fp);
 
 void valor_tf(AST* node, FILE *fp);
