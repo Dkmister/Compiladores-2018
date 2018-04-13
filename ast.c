@@ -59,11 +59,11 @@ void program_to_file(char *filename)
 
   fp = fopen(filename, "w");
   fprintf(fp, "\\\\""File containing the generated code by decompiling the AST.\n");
-  node_tf(main_node, 0, fp);
+  node_tf(main_node, fp);
   fclose(fp);
 }
 
-void node_tf(AST* node, int level, FILE *fp)
+void node_tf(AST* node, FILE *fp)
 {
   if (node == NULL)
     return;
@@ -71,7 +71,7 @@ void node_tf(AST* node, int level, FILE *fp)
   switch (node->type) {
 
   case T_PROGRAMA:
-    node_tf(node->son5, level, fp);
+    node_tf(node->son5, fp);
     break;
 
   case T_GLOBALS:
@@ -82,7 +82,7 @@ void node_tf(AST* node, int level, FILE *fp)
     fprintf(fp," = ");
     valor_tf(node->son2, fp);
     fprintf(fp, ";");
-    node_tf(node->son5, level, fp);
+    node_tf(node->son5, fp);
     break; 
 
   case T_GLOBALP:
@@ -93,7 +93,7 @@ void node_tf(AST* node, int level, FILE *fp)
     fprintf(fp," = ");
     valor_tf(node->son2, fp);
     fprintf(fp, ";");
-    node_tf(node->son5, level, fp);
+    node_tf(node->son5, fp);
     break; 
 
   case T_GLOBALV:
@@ -106,10 +106,44 @@ void node_tf(AST* node, int level, FILE *fp)
     fprintf(fp, "]");
     if (node->son2 != NULL) {
       fprintf(fp,":");
-      lista_tf(node->son2, fp);
+      vetor_tf(node->son2, fp);
     }
     fprintf(fp, ";");
-    node_tf(node->son5, level, fp);
+    node_tf(node->son5, fp);
+    break; 
+
+  case T_FUNCAO_D:
+    fprintf(fp, "\n\n");
+    tipo_tf(node->son1, fp);
+    fprintf(fp, " ");
+    identificador_tf(node->son1, fp);
+    fprintf(fp, "(");
+    if (node->son1->son1 != NULL) {
+      tipo_tf(node->son1->son1, fp);
+      fprintf(fp, " ");
+      identificador_tf(node->son1->son1, fp);
+      arg_tf(node->son1->son1->son5, fp);
+    }
+    fprintf(fp, ")");
+    node_tf(node->son2, fp);
+    node_tf(node->son5, fp);
+    break; 
+
+  case T_BLOCO:
+    fprintf(fp, "\n");
+    fprintf(fp, "{");
+    node_tf(node->son1, fp);
+    fprintf(fp, "\n");
+    fprintf(fp, "}");
+    node_tf(node->son5, fp);
+
+  case T_ATRIBUICAO:
+    fprintf(fp, "\n");
+    //identificador_tf(node->son1, fp);
+    fprintf(fp," = ");
+    //valor_tf(node->son3, fp);
+    fprintf(fp, ";");
+    node_tf(node->son5, fp);
     break; 
 
   }
@@ -152,13 +186,24 @@ void valor_tf(AST* node, FILE *fp)
   fprintf(fp, "%s", node->hash_pointer->text);
 }
 
-void lista_tf(AST* node, FILE *fp)
+void vetor_tf(AST* node, FILE *fp)
 {
   if (node == NULL)
     return;
   fprintf(fp, " ");
   valor_tf(node, fp);
-  lista_tf(node->son5, fp);
+  vetor_tf(node->son5, fp);
+}
+
+void arg_tf(AST* node, FILE *fp)
+{
+  if (node == NULL)
+    return;
+  fprintf(fp, ", ");
+  tipo_tf(node, fp);
+  fprintf(fp, " ");
+  identificador_tf(node, fp);
+  arg_tf(node->son5, fp);
 }
 
 void print_name(int type)

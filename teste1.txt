@@ -9,3 +9,9 @@ char c = 'x';
 char d = 65;
 int #pt = 0;
 
+int main(int x, int y)
+{
+  a = 10;
+  pt = &a;
+  i = #pt;
+}

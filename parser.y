@@ -135,8 +135,8 @@ Comando_Simples: Return		{ $$ = $1; }
 
 Bloco: '{' Lista_Comandos '}'	{ $$ = new_ast(T_BLOCO); $$->son1 = $2; }
 
-Atribuicao: Identificador '=' Expressao			{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son3 = $3; }
-Atribuicao: Identificador'['Expressao']' '=' Expressao	{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son1->son1 = $3; $$->son3 = $6; }
+Atribuicao: Identificador '=' Expressao			{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son2 = $3; }
+Atribuicao: Identificador'['Expressao']' '=' Expressao	{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son1->son1 = $3; $$->son2 = $6; }
 
 If: KW_IF '(' Expressao ')' KW_THEN Comando_Simples	{ $$ = new_ast(T_IF); $$->son1 = $3; $$->son2 = $6; }
 

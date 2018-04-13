@@ -68,7 +68,7 @@ void node_print(AST* printme, int level);
 
 void program_to_file(char *filename);
 
-void node_tf(AST* node, int level, FILE *fp);
+void node_tf(AST* node, FILE *fp);
 
 void tipo_tf(AST* node, FILE *fp);
 
@@ -76,7 +76,9 @@ void identificador_tf(AST* node, FILE *fp);
 
 void valor_tf(AST* node, FILE *fp);
 
-void lista_tf(AST* node, FILE *fp);
+void vetor_tf(AST* node, FILE *fp);
+
+void arg_tf(AST* node, FILE *fp);
 
 void print_name(int type);
 
