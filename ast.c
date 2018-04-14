@@ -58,7 +58,7 @@ void program_to_file(char *filename)
   FILE *fp;
 
   fp = fopen(filename, "w");
-  fprintf(fp, "\\\\""File containing the generated code by decompiling the AST.\n");
+  fprintf(fp, "//File containing the generated code by decompiling the AST.\n");
   node_tf(main_node, fp);
   fclose(fp);
 }
@@ -80,7 +80,7 @@ void node_tf(AST* node, FILE *fp)
     fprintf(fp, " ");
     identificador_tf(node->son1, fp);
     fprintf(fp," = ");
-    valor_tf(node->son2, fp);
+    node_tf(node->son2, fp);
     fprintf(fp, ";");
     node_tf(node->son5, fp);
     break; 
@@ -91,7 +91,7 @@ void node_tf(AST* node, FILE *fp)
     fprintf(fp, " #");
     identificador_tf(node->son1, fp);
     fprintf(fp," = ");
-    valor_tf(node->son2, fp);
+    node_tf(node->son2, fp);
     fprintf(fp, ";");
     node_tf(node->son5, fp);
     break; 
@@ -101,9 +101,6 @@ void node_tf(AST* node, FILE *fp)
     tipo_tf(node->son1, fp);
     fprintf(fp, " ");
     identificador_tf(node->son1, fp);
-    fprintf(fp, "[");
-    valor_tf(node->son1->son1, fp);
-    fprintf(fp, "]");
     if (node->son2 != NULL) {
       fprintf(fp,":");
       vetor_tf(node->son2, fp);
@@ -116,35 +113,161 @@ void node_tf(AST* node, FILE *fp)
     fprintf(fp, "\n\n");
     tipo_tf(node->son1, fp);
     fprintf(fp, " ");
-    identificador_tf(node->son1, fp);
+    node_tf(node->son1, fp);
     fprintf(fp, "(");
-    if (node->son1->son1 != NULL) {
-      tipo_tf(node->son1->son1, fp);
+    if (node->son1->son2 != NULL) {
+      tipo_tf(node->son1->son2, fp);
       fprintf(fp, " ");
-      identificador_tf(node->son1->son1, fp);
-      arg_tf(node->son1->son1->son5, fp);
+      node_tf(node->son1->son2, fp);
+      arg_tf(node->son1->son2->son5, fp);
     }
     fprintf(fp, ")");
-    node_tf(node->son2, fp);
+    fprintf(fp, "\n");
+    fprintf(fp, "{");
+    node_tf(node->son2->son1, fp);
+    fprintf(fp, "\n");
+    fprintf(fp, "}");
     node_tf(node->son5, fp);
     break; 
+
+  case T_FUNCAO_C:
+    node_tf(node->son1, fp);
+    fprintf(fp, "(");    
+    if (node->son1->son2 != NULL) {
+      node_tf(node->son1->son2, fp);
+      lista_tf(node->son1->son2->son5, fp);
+    }
+    fprintf(fp, ")");
+    break;
 
   case T_BLOCO:
     fprintf(fp, "\n");
     fprintf(fp, "{");
     node_tf(node->son1, fp);
     fprintf(fp, "\n");
-    fprintf(fp, "}");
+    fprintf(fp, "};");
     node_tf(node->son5, fp);
+    break;
 
   case T_ATRIBUICAO:
     fprintf(fp, "\n");
-    //identificador_tf(node->son1, fp);
-    fprintf(fp," = ");
-    //valor_tf(node->son3, fp);
+    node_tf(node->son1, fp);
+    fprintf(fp, " = ");
+    node_tf(node->son2, fp);
     fprintf(fp, ";");
     node_tf(node->son5, fp);
     break; 
+
+  case T_IF:
+    fprintf(fp, "\nif (");
+    node_tf(node->son1, fp);
+    fprintf(fp, ") then ");
+    if (node->son2 != NULL)
+      node_tf(node->son2, fp);
+    else fprintf(fp, "\n;");
+    node_tf(node->son5, fp);
+    break;
+
+  case T_IFELSE:
+    fprintf(fp, "\nif (");
+    node_tf(node->son1, fp);
+    fprintf(fp, ") then ");
+    node_tf(node->son2, fp);
+    fprintf(fp, " \nelse "); 
+    if (node->son3 != NULL)
+      node_tf(node->son3, fp);
+    else fprintf(fp, "\n;");
+    node_tf(node->son5, fp);
+    break;
+
+  case T_WHILE:
+    fprintf(fp, "\nwhile (");
+    node_tf(node->son1, fp);
+    fprintf(fp, ") ");
+    if (node->son2 != NULL)
+      node_tf(node->son2, fp);
+    else fprintf(fp, "\n;");
+    node_tf(node->son5, fp);
+    break;
+
+  case T_FOR:
+    fprintf(fp, "\nfor (");
+    node_tf(node->son1, fp);
+    fprintf(fp, " = ");
+    node_tf(node->son2, fp);
+    fprintf(fp, " to ");
+    node_tf(node->son3, fp);
+    fprintf(fp, ") ");
+    if (node->son4 != NULL)
+      node_tf(node->son4, fp);
+    else fprintf(fp, "\n;");
+    node_tf(node->son5, fp);
+    break;
+
+  case T_READ:
+    fprintf(fp, "\nread ");
+    node_tf(node->son1, fp);
+    fprintf(fp, ";");
+    node_tf(node->son5, fp);
+    break;
+
+  case T_PRINT:
+    fprintf(fp, "\nprint ");
+    node_tf(node->son1, fp);
+    lista_tf(node->son1->son5, fp);
+    fprintf(fp, ";");
+    node_tf(node->son5, fp);
+    break;
+
+  case T_RETURN:
+    fprintf(fp, "\nreturn ");
+    node_tf(node->son1, fp);
+    fprintf(fp, ";");
+    node_tf(node->son5, fp);
+    break;
+
+  case T_ASOMA:
+  case T_ASUBT:
+  case T_AMULT:
+  case T_ADIV:
+  case T_LMENOR:
+  case T_LMAIOR:
+  case T_LLE:
+  case T_LGE:
+  case T_LEQ:
+  case T_LNE:
+  case T_LAND:
+  case T_LOR:
+    node_tf(node->son1, fp);
+    operator_tf(node, fp);
+    node_tf(node->son2, fp);
+    break;
+
+  case T_ANEG:
+    fprintf(fp, "-");
+    node_tf(node->son1, fp);
+    break;
+
+  case T_LNEG:
+    fprintf(fp, "!");
+    node_tf(node->son1, fp);
+    break;
+
+  case T_LITERAL:
+    valor_tf(node, fp);
+    break;
+
+  case T_IDENTIFICADOR:
+    identificador_tf(node, fp);
+    break;
+
+  case T_IDENTIFIC_D:
+    identificador_tf(node, fp);
+    break;
+
+  case T_IDENTIFIC_R:
+    identificador_tf(node, fp);
+    break;
 
   }
 }
@@ -178,7 +301,23 @@ void tipo_tf(AST* node, FILE *fp)
 
 void identificador_tf(AST* node, FILE *fp)
 {
+  switch (node->type) {
+  case T_IDENTIFIC_R:
+    fprintf(fp, "&");
+    break;
+  case T_IDENTIFIC_D:
+    fprintf(fp, "#");
+    break;
+  }
+
   fprintf(fp, "%s", node->hash_pointer->text);
+
+  if (node->son1 != NULL) {
+    fprintf(fp, "[");
+    node_tf(node->son1, fp);
+    fprintf(fp, "]");
+  }
+
 }
 
 void valor_tf(AST* node, FILE *fp)
@@ -191,7 +330,7 @@ void vetor_tf(AST* node, FILE *fp)
   if (node == NULL)
     return;
   fprintf(fp, " ");
-  valor_tf(node, fp);
+  node_tf(node, fp);
   vetor_tf(node->son5, fp);
 }
 
@@ -204,6 +343,57 @@ void arg_tf(AST* node, FILE *fp)
   fprintf(fp, " ");
   identificador_tf(node, fp);
   arg_tf(node->son5, fp);
+}
+
+void lista_tf(AST* node, FILE *fp)
+{
+  if (node == NULL)
+    return;
+  fprintf(fp, ", ");
+  node_tf(node, fp);
+  lista_tf(node->son5, fp);
+}
+
+void operator_tf(AST* node, FILE *fp)
+{
+  switch (node->type) {
+  case T_ASOMA:
+    fprintf(fp, " + ");
+    break;
+  case T_ASUBT:
+    fprintf(fp, " - ");
+    break;
+  case T_AMULT:
+    fprintf(fp, " * ");
+    break;
+  case T_ADIV:
+    fprintf(fp, " / ");
+    break;
+  case T_LMENOR:
+    fprintf(fp, " < ");
+    break;
+  case T_LMAIOR:
+    fprintf(fp, " > ");
+    break;
+  case T_LLE:
+    fprintf(fp, " <= ");
+    break;
+  case T_LGE:
+    fprintf(fp, " >= ");
+    break;
+  case T_LEQ:
+    fprintf(fp, " == ");
+    break;
+  case T_LNE:
+    fprintf(fp, " != ");
+    break;
+  case T_LAND:
+    fprintf(fp, " && ");
+    break;
+  case T_LOR:
+    fprintf(fp, " || ");
+    break;
+  }
 }
 
 void print_name(int type)

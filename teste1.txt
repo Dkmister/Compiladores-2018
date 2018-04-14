@@ -9,9 +9,13 @@ char c = 'x';
 char d = 65;
 int #pt = 0;
 
-int main(int x, int y)
-{
+
+int main()
+  {
   a = 10;
   pt = &a;
   i = #pt;
-}
+  v[2] = v[10-1];
+  for (i = 1 to 10)
+    print i, " ";
+  }

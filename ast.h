@@ -80,6 +80,10 @@ void vetor_tf(AST* node, FILE *fp);
 
 void arg_tf(AST* node, FILE *fp);
 
+void lista_tf(AST* node, FILE *fp);
+
+void operator_tf(AST* node, FILE *fp);
+
 void print_name(int type);
 
 #endif

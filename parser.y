@@ -101,7 +101,7 @@ De_Glo_Var_Vetor: Tipo Identificador'['LIT_INTEGER']'			{ $$ = new_ast(T_GLOBALV
 
 De_Funcoes: Fun_Cabecalho Fun_Corpo			{ $$ = new_ast(T_FUNCAO_D); $$->son1 = $1; $$->son2 = $2; }
 
-Fun_Cabecalho: Tipo Identificador '('Fun_Parametros')'	{ $$ = $2; $2->var_type = $1; $$->son1 = $4; }
+Fun_Cabecalho: Tipo Identificador '('Fun_Parametros')'	{ $$ = $2; $2->var_type = $1; $$->son2 = $4; }
 Fun_Parametros: 					{ $$ = NULL; }
 Fun_Parametros: Fun_Com_Parametros			{ $$ = $1; }
 Fun_Com_Parametros: Parametro				{ $$ = $1; }
@@ -110,7 +110,7 @@ Parametro: Tipo Identificador				{ $$ = $2; $2->var_type = $1; }
 
 Fun_Corpo: Bloco					{ $$ = $1; }
 
-Fun_Chamada: Identificador'('Fun_Cha_Parametros')'		{ $$ = new_ast(T_FUNCAO_C); $$->son1 = $1; $$->son1->son1 = $3; }
+Fun_Chamada: Identificador'('Fun_Cha_Parametros')'		{ $$ = new_ast(T_FUNCAO_C); $$->son1 = $1; $$->son1->son2 = $3; }
 Fun_Cha_Parametros:						{ $$ = NULL; }
 Fun_Cha_Parametros: Fun_Cha_Com_Parametros			{ $$ = $1; }
 Fun_Cha_Com_Parametros: Cha_Parametro				{ $$ = $1; }
