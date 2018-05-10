@@ -7,8 +7,8 @@
 # Therefore, there must be a header of it to be included in scanner.l
 #
 
-etapa3: parser.tab.o lex.yy.o main.o hash.o aux.o ast.o
-	gcc -o etapa3 parser.tab.o lex.yy.o main.o hash.o aux.o ast.o
+etapa3: parser.tab.o lex.yy.o main.o hash.o aux.o ast.o semantic.o
+	gcc -o etapa3 parser.tab.o lex.yy.o main.o hash.o aux.o ast.o semantic.o
 main.o: main.c
 	gcc -c main.c
 ast.o: ast.c
@@ -25,5 +25,7 @@ parser.tab.o: parser.tab.c
 	gcc -c parser.tab.c
 parser.tab.c: parser.y
 	bison -d -v parser.y
+semantic: semantic.c
+	gcc  -c semantic.c
 clean:
 	rm *.o lex.yy.c etapa3 parser.tab.c parser.tab.h parser.output lex.yy.h saida.txt
