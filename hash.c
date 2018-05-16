@@ -30,6 +30,10 @@ int hashAddress(char* text){
 
 HASH* hashInsert(int type, char* text)
 {
+
+  if(hashFind(text) != 0)
+    return hashFind(text);
+
   int address;
 
   HASH* newnode = 0;
@@ -43,6 +47,8 @@ HASH* hashInsert(int type, char* text)
   strcpy(newnode->text,text);
 
   newnode->type = type;
+
+  newnode->data_type = 0;
 
   newnode->next = Table[address];
 

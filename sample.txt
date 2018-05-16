@@ -9,12 +9,17 @@ char c = 'x';
 char d = 65;
 int #pt = 0;
 
+int incn (int x, int n)
+  {
+  return x+n;
+  }
 
 int main()
   {
-  a = 10;
+  a = 15;
   pt = &a;
   i = #pt;
+  v[2.5] = 0;
   v[2] = v[10-1];
   for (i = 1 to 10)
     print i, " ";
@@ -39,14 +44,9 @@ int main()
   {}
   }
 
-int incn (int x, int n)
-  {
-  return x+n;
-  }
-
 int voidfunc()
   {
   }
-  
+  	
 
 

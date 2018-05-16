@@ -39,9 +39,10 @@
 #define T_IDENTIFIC_R	32
 
 #define NOT_VAR		-1
-#define CHAR_VAR	1
-#define INT_VAR		2
-#define FLOAT_VAR	3
+#define INT_VAR		1
+#define FLOAT_VAR	2
+#define CHAR_VAR	3
+#define STRING_VAR	4
 
 typedef struct ast_node{
   int type;

@@ -11,6 +11,8 @@ etapa4: parser.tab.o lex.yy.o main.o hash.o aux.o ast.o semantic.o
 	gcc -o etapa4 parser.tab.o lex.yy.o main.o hash.o aux.o ast.o semantic.o
 main.o: main.c
 	gcc -c main.c
+semantic.o: semantic.c
+	gcc -c semantic.c
 ast.o: ast.c
 	gcc -c ast.c
 hash.o: hash.c
@@ -25,7 +27,5 @@ parser.tab.o: parser.tab.c
 	gcc -c parser.tab.c
 parser.tab.c: parser.y
 	bison -d -v parser.y
-semantic: semantic.c
-	gcc  -c semantic.c
 clean:
-	rm *.o lex.yy.c etapa3 parser.tab.c parser.tab.h parser.output lex.yy.h saida.txt
+	rm *.o lex.yy.c etapa3 parser.tab.c parser.tab.h parser.output lex.yy.h saida.txt saida2.txt

@@ -5,6 +5,7 @@
 #include "main.h"
 #include "hash.h"
 #include "ast.h"
+#include "semantic.h"
 int yydebug = 1;
 
 extern int yyparse(void);
@@ -81,7 +82,7 @@ extern AST* main_node;
 /* Linguagem lang182 */
 
 
-Codigo: 			{ $$ = new_ast(T_PROGRAMA); main_node = $$; }
+Codigo: 			{ $$ = new_ast(T_PROGRAMA); main_node = $$; 	}
 Codigo: Codigo Declaracoes	{ $$ = $1; list_son($1, $2); }
 
 Declaracoes: De_Globais';'	{ $$ = $1; }
@@ -89,17 +90,17 @@ Declaracoes: De_Funcoes		{ $$ = $1; }
 
 /* Declaracoes Globais */
 
-De_Globais: De_Glo_Var_Simples						{ $$ = $1; }
+De_Globais: De_Glo_Var_Simples						{ $$ = $1; set_declarations($$); }
 De_Glo_Var_Simples: Tipo Identificador '=' Valor			{ $$ = new_ast(T_GLOBALS); $$->son1 = $2; $2->var_type = $1; $$->son2 = $4; }
 De_Glo_Var_Simples: Tipo '#'Identificador '=' Valor			{ $$ = new_ast(T_GLOBALP); $$->son1 = $3; $3->var_type = $1; $$->son2 = $5; }
 
-De_Globais: De_Glo_Var_Vetor						{ $$ = $1; }
+De_Globais: De_Glo_Var_Vetor						{ $$ = $1; set_declarations($$); }
 De_Glo_Var_Vetor: Tipo Identificador'['LIT_INTEGER']'':' Valores	{ $$ = new_ast(T_GLOBALV); $$->son1 = $2; $2->var_type = $1; $$->son1->son1 = new_ast(T_LITERAL); $$->son1->son1->hash_pointer = $4; $$->son2 = $7; }
 De_Glo_Var_Vetor: Tipo Identificador'['LIT_INTEGER']'			{ $$ = new_ast(T_GLOBALV); $$->son1 = $2; $2->var_type = $1; $$->son1->son1 = new_ast(T_LITERAL);; $$->son1->son1->hash_pointer = $4; }
 
 /* Declaracoes Funcoes + Chamada Funcoes */
 
-De_Funcoes: Fun_Cabecalho Fun_Corpo			{ $$ = new_ast(T_FUNCAO_D); $$->son1 = $1; $$->son2 = $2; }
+De_Funcoes: Fun_Cabecalho Fun_Corpo			{ $$ = new_ast(T_FUNCAO_D); $$->son1 = $1; $$->son2 = $2; set_declarations($$); }
 
 Fun_Cabecalho: Tipo Identificador '('Fun_Parametros')'	{ $$ = $2; $2->var_type = $1; $$->son2 = $4; }
 Fun_Parametros: 					{ $$ = NULL; }
@@ -110,7 +111,7 @@ Parametro: Tipo Identificador				{ $$ = $2; $2->var_type = $1; }
 
 Fun_Corpo: Bloco					{ $$ = $1; }
 
-Fun_Chamada: Identificador'('Fun_Cha_Parametros')'		{ $$ = new_ast(T_FUNCAO_C); $$->son1 = $1; $$->son1->son2 = $3; }
+Fun_Chamada: Identificador'('Fun_Cha_Parametros')'		{ $$ = new_ast(T_FUNCAO_C); $$->son1 = $1; $$->son1->son2 = $3; set_declarations($$); }
 Fun_Cha_Parametros:						{ $$ = NULL; }
 Fun_Cha_Parametros: Fun_Cha_Com_Parametros			{ $$ = $1; }
 Fun_Cha_Com_Parametros: Cha_Parametro				{ $$ = $1; }
@@ -135,8 +136,8 @@ Comando_Simples: Return		{ $$ = $1; }
 
 Bloco: '{' Lista_Comandos '}'	{ $$ = new_ast(T_BLOCO); $$->son1 = $2; }
 
-Atribuicao: Identificador '=' Expressao			{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son2 = $3; }
-Atribuicao: Identificador'['Expressao']' '=' Expressao	{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son1->son1 = $3; $$->son2 = $6; }
+Atribuicao: Identificador '=' Expressao			{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son2 = $3; set_declarations($$); }
+Atribuicao: Identificador'['Expressao']' '=' Expressao	{ $$ = new_ast(T_ATRIBUICAO); $$->son1 = $1; $$->son1->son1 = $3; $$->son2 = $6; set_declarations($$); }
 
 If: KW_IF '(' Expressao ')' KW_THEN Comando_Simples	{ $$ = new_ast(T_IF); $$->son1 = $3; $$->son2 = $6; }
 
@@ -177,6 +178,7 @@ Expressao: '!'Expressao				{ $$ = new_ast(T_LNEG); $$->son1 = $2; }
 Expressao: '(''-'Expressao')'			{ $$ = new_ast(T_ANEG); $$->son1 = $3; }
 
 Operando: LIT_INTEGER			{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
+Operando: LIT_REAL			{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
 Operando: LIT_CHAR			{ $$ = new_ast(T_LITERAL); $$->hash_pointer = $1; }
 Operando: Identificador			{ $$ = $1; }
 Operando: '#'TK_IDENTIFIER		{ $$ = new_ast(T_IDENTIFIC_D); $$->hash_pointer = $2; }

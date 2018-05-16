@@ -23,14 +23,9 @@ int getLineNumber(void);
 // YYPARSE ERROR, retorna mensagem de erro e exit(3)
 void yyerror (char const *mensagem);
 
+void semanticError(char const *mensagem);
+
 // Lex function declaration
 
 int yylex();
 
-/// Constants
-
-#define LT_INT    1
-#define LT_FLOAT  2
-#define LT_CHAR   3
-#define LT_STRING 4
-#define LT_IDENT  5
