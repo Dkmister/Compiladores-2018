@@ -5,7 +5,8 @@ Tem nas fotos que te passei, da uma olhada.
 To meio confuso, mas essa vai ser minha contribuicao, se for util de alguma forma.
 
 */
-void set_declarations(AST *node){
+void set_declarations(AST* node)
+{
 
   switch (node->type) {
 
@@ -14,7 +15,7 @@ void set_declarations(AST *node){
     {
       node->son1->hash_pointer->type = VAR_S;
       node->son1->hash_pointer->data_type = node->son1->var_type;
-      type_check(node->son1->hash_pointer->data_type, node->son2->hash_pointer->type, 0);
+      type_check(node->son1->hash_pointer->data_type, node->son2->hash_pointer->type);
     } else
       semanticError("Identifier already declared;");
     break; 
@@ -24,7 +25,7 @@ void set_declarations(AST *node){
     {
       node->son1->hash_pointer->type = VAR_S;
       node->son1->hash_pointer->data_type = node->son1->var_type;
-      type_check(node->son1->hash_pointer->data_type, node->son2->hash_pointer->type, 0);
+      type_check(node->son1->hash_pointer->data_type, node->son2->hash_pointer->type);
     } else
       semanticError("Identifier already declared;");
     break; 
@@ -60,7 +61,71 @@ void set_declarations(AST *node){
       node->son1->hash_pointer->data_type = node->son1->var_type;
     } else
       semanticError("Identifier already declared;");
+    break;
+
+  case T_IDENTIFICADOR:
+    if (node->hash_pointer->type == LT_IDENT)
+    {
+      node->hash_pointer->type = VAR_S;
+      node->hash_pointer->data_type = node->var_type;
+      node->hash_pointer->scoped = 1;
+    } else
+      semanticError("Identifier already declared;");
     break; 
+    
+
+  }
+
+}
+
+void check_expression(AST* node)
+{
+
+  switch (node->type) {
+
+  case T_ASOMA:
+  case T_ASUBT:
+  case T_AMULT:
+  case T_ADIV:
+    
+  case T_LMENOR:
+  case T_LMAIOR:
+  case T_LLE:
+  case T_LGE:
+  case T_LEQ:
+  case T_LNE:
+  case T_LAND:
+  case T_LOR:
+    break;
+
+  case T_ANEG:
+    break;
+
+  case T_LNEG:
+    break;
+
+  case T_LITERAL:
+    break;
+
+  case T_IDENTIFICADOR:
+  case T_IDENTIFIC_D:
+  case T_IDENTIFIC_R:
+    if (node->hash_pointer->type == LT_IDENT)
+    {
+      semanticError("Identifier not declared;");
+    }
+    break;
+
+  }
+
+}
+
+void check_command(AST *node)
+{
+
+  int right_type = 0;
+
+  switch (node->type) {
 
   case T_FUNCAO_C:
     if (node->son1->hash_pointer->type == LT_IDENT)
@@ -74,16 +139,29 @@ void set_declarations(AST *node){
     break;
 
   case T_ATRIBUICAO:
-    if (node->son1->hash_pointer->type == LT_IDENT)
+    switch (node->son2->type)
     {
-      semanticError("Identifier not declared;");
-    } else if (node->son2->hash_pointer->type == LT_IDENT)
+      case T_LITERAL:
+        right_type = node->son2->hash_pointer->type;
+        break;
+
+      case T_IDENTIFICADOR:
+      case T_IDENTIFIC_D:
+      case T_IDENTIFIC_R:
+        right_type = node->son2->hash_pointer->data_type;
+        break;
+
+      case T_FUNCAO_C:
+        right_type = node->son2->son1->hash_pointer->data_type;
+        break;
+    }
+    if (node->son1->hash_pointer->type == LT_IDENT)
     {
       semanticError("Identifier not declared;");
     } else if (node->son1->hash_pointer->type == VAR_F)
       semanticError("Trying to assign to a function;");
     else if (node->son1->hash_pointer->type == VAR_S)
-      type_check(node->son1->hash_pointer->data_type, node->son2->hash_pointer->type, node->son2->hash_pointer->data_type);
+      type_check(node->son1->hash_pointer->data_type, right_type);
     else if (node->son1->hash_pointer->type == VAR_V)
     {
       int can_int = 0, can_float = 0, can_char = 0;
@@ -101,7 +179,7 @@ void set_declarations(AST *node){
         can_char = 1;
       }
       type_vector(node->son2, can_int, can_float, can_char, 0);
-      type_check(node->son1->son1->hash_pointer->data_type, LT_INT, 0);
+      type_check(node->son1->son1->hash_pointer->data_type, LT_INT);
     }
     break; 
 
@@ -126,54 +204,21 @@ void set_declarations(AST *node){
   case T_RETURN:
     break;
 
-  case T_ASOMA:
-  case T_ASUBT:
-  case T_AMULT:
-  case T_ADIV:
-  case T_LMENOR:
-  case T_LMAIOR:
-  case T_LLE:
-  case T_LGE:
-  case T_LEQ:
-  case T_LNE:
-  case T_LAND:
-  case T_LOR:
-    break;
-
-  case T_ANEG:
-    break;
-
-  case T_LNEG:
-    break;
-
-  case T_LITERAL:
-    break;
-
-  case T_IDENTIFICADOR:
-    if (node->son1->hash_pointer->type == LT_IDENT)
-    {
-      semanticError("Identifier not declared;");
-    }
-    break;
-
-  case T_IDENTIFIC_D:
-    break;	
-
-  case T_IDENTIFIC_R:
-    break;
-
   }
 
 }
 
-void type_check(int type1, int type2, int type3)
+void type_check(int type1, int type2)
 {
   if ((type1 != type2) && !(((type1 == CHAR_VAR) && (type2 == INT_VAR)) || ((type2 == CHAR_VAR) && (type1 == INT_VAR))))
-    if ((type1 != type3) && !(((type1 == CHAR_VAR) && (type3 == INT_VAR)) || ((type3 == CHAR_VAR) && (type1 == INT_VAR))))
-      semanticError("Types do not match;");
+    semanticError("Types do not match;");
 }
 
-void type_vector(AST *node, int can_int, int can_float, int can_char, int can_string)
+void check_int(AST* node)
+{
+}
+
+void type_vector(AST* node, int can_int, int can_float, int can_char, int can_string)
 {
 
   if (node != NULL)

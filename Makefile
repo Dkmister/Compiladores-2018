@@ -8,23 +8,23 @@
 #
 
 etapa4: parser.tab.o lex.yy.o main.o hash.o aux.o ast.o semantic.o
-	gcc -o etapa4 parser.tab.o lex.yy.o main.o hash.o aux.o ast.o semantic.o
+	gcc -g -o etapa4 parser.tab.o lex.yy.o main.o hash.o aux.o ast.o semantic.o
 main.o: main.c
-	gcc -c main.c
+	gcc -g -c main.c
 semantic.o: semantic.c
-	gcc -c semantic.c
+	gcc -g -c semantic.c
 ast.o: ast.c
-	gcc -c ast.c
+	gcc -g -c ast.c
 hash.o: hash.c
-	gcc -c hash.c
+	gcc -g -c hash.c
 aux.o: aux.c
-	gcc -c aux.c
+	gcc -g -c aux.c
 lex.yy.o: lex.yy.c
-	gcc -c lex.yy.c
+	gcc -g -c lex.yy.c
 lex.yy.c: scanner.l
 	flex --header-file=lex.yy.h scanner.l
 parser.tab.o: parser.tab.c
-	gcc -c parser.tab.c
+	gcc -g -c parser.tab.c
 parser.tab.c: parser.y
 	bison -d -v parser.y
 clean:

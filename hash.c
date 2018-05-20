@@ -50,6 +50,8 @@ HASH* hashInsert(int type, char* text)
 
   newnode->data_type = 0;
 
+  newnode->scoped = 0;
+
   newnode->next = Table[address];
 
   Table[address] = newnode;
@@ -84,3 +86,22 @@ void hashPrint(void)
     for(node = Table[i];node;node = node->next)
       printf("Table [%d] has %s, type: %d \n",i,node->text, node->type);
 }
+
+void hashUnscope(void)
+{
+int i;
+
+  HASH* node;
+
+  for(i=0;i<HASH_SIZE;i++)
+    for(node = Table[i];node;node = node->next)
+    {
+      if (node->scoped == 1)
+      {
+        node->type = LT_IDENT;
+        node->data_type = 0;
+        node->scoped = 0;
+      }
+    }
+}
+

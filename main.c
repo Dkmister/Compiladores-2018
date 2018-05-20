@@ -10,20 +10,20 @@ int main(int argc, char **argv)
   int token = 0;
 
   if (argc>3){
-    fprintf(stderr, "\n\nEntradas de mais recebidas. Deve ser provido pelo menos um arquivo de entrada, da seguinte forma - ./etapa3 entrada.txt -.");
-    fprintf(stderr, "\nOpcionalmente pode ser provido também um arquivo de saída para decompilação, - ./etapa3 entrada.txt saida.txt -.\n\n\n");
+    fprintf(stderr, "\n\nEntradas de mais recebidas. Deve ser provido pelo menos um arquivo de entrada, da seguinte forma - ./etapa4 entrada.txt -.");
+    fprintf(stderr, "\nOpcionalmente pode ser provido também um arquivo de saída para decompilação, - ./etapa4 entrada.txt saida.txt -.\n\n\n");
     exit(1);
   }
 
   if (argc<2){
-    fprintf(stderr, "\n\nDeve ser provido pelo menos um arquivo de entrada, da seguinte forma - ./etapa3 entrada.txt -.");
-    fprintf(stderr, "\nOpcionalmente pode ser provido também um arquivo de saída para decompilação, - ./etapa3 entrada.txt saida.txt -.\n\n\n");
+    fprintf(stderr, "\n\nDeve ser provido pelo menos um arquivo de entrada, da seguinte forma - ./etapa4 entrada.txt -.");
+    fprintf(stderr, "\nOpcionalmente pode ser provido também um arquivo de saída para decompilação, - ./etapa4 entrada.txt saida.txt -.\n\n\n");
     exit(1);
   }
 
   if (argc<3){
     fprintf(stderr, "\n\nArquivo de entrada recebido, arquivo de saída não.");
-    fprintf(stderr, "\nPara que seja salvo o resultado da decompilação é necessário um arquivo de saída - ./etapa3 entrada.txt saida.txt -.\n\n\n");
+    fprintf(stderr, "\nPara que seja salvo o resultado da decompilação é necessário um arquivo de saída - ./etapa4 entrada.txt saida.txt -.\n\n\n");
   } else {
     fprintf(stderr, "\n\nArquivos de entrada e saída recebidos.");
   }
@@ -38,15 +38,15 @@ int main(int argc, char **argv)
 
   yyparse();
   
-  /* HASH PRINT
-  hashPrint(); */
+  /* HASH PRINT */
+  hashPrint(); /**/
 
   /* AST PRINT */
-  ast_print();
+  ast_print(); /**/
 
   /* DECOMPILE */
   if (argc == 3)
-    program_to_file(argv[2]);
+    program_to_file(argv[2]); /**/
 
   return 0;
 }
