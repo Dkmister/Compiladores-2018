@@ -10,12 +10,12 @@ char d = 65;
 int #pt = 0;
 
 int incn (int x, int n)
-  {
+{
   return x+n;
-  }
+}
 
 int main()
-  {
+{
   a = 15;
   pt = &a;
   i = #pt;
@@ -43,12 +43,12 @@ int main()
   ;;;
   {;};
   {}
-  }
+}
 
 int voidfunc()
-  {
+{
   return 1;
-  }
+}
   	
 
 
