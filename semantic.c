@@ -5,6 +5,10 @@ Tem nas fotos que te passei, da uma olhada.
 To meio confuso, mas essa vai ser minha contribuicao, se for util de alguma forma.
 
 */
+
+int return_type = 0;
+int returned = 0;
+
 void set_declarations(AST* node)
 {
 
@@ -59,6 +63,8 @@ void set_declarations(AST* node)
     {
       node->son1->hash_pointer->type = VAR_F;
       node->son1->hash_pointer->data_type = node->son1->var_type;
+      return_type = node->son1->var_type;
+      returned = 0;
     } else
       semanticError("Identifier already declared;");
     break;
@@ -81,12 +87,63 @@ void set_declarations(AST* node)
 void check_expression(AST* node)
 {
 
+  int left_type = 0;
+  int right_type = 0;
+  if (node->son2 != NULL)
+    switch (node->son1->type)
+    {
+
+    case T_LITERAL:
+      left_type = node->son1->hash_pointer->type;
+      break;
+
+    case T_IDENTIFICADOR:
+    case T_IDENTIFIC_D:
+    case T_IDENTIFIC_R:
+      left_type = node->son1->hash_pointer->data_type;
+      break;
+
+    case T_FUNCAO_C:
+      left_type = node->son1->son1->hash_pointer->data_type;
+      break;
+
+    default:
+      left_type = node->son2->exp_type;
+      break;
+
+    }
+
+  if (node->son2 != NULL)
+    switch (node->son2->type)
+    {
+
+    case T_LITERAL:
+      right_type = node->son2->hash_pointer->type;
+      break;
+
+    case T_IDENTIFICADOR:
+    case T_IDENTIFIC_D:
+    case T_IDENTIFIC_R:
+      right_type = node->son2->hash_pointer->data_type;
+      break;
+
+    case T_FUNCAO_C:
+      right_type = node->son2->son1->hash_pointer->data_type;
+      break;
+
+    default:
+      right_type = node->son2->exp_type;
+      break;
+
+    }
+
   switch (node->type) {
 
   case T_ASOMA:
   case T_ASUBT:
   case T_AMULT:
   case T_ADIV:
+    node->exp_type = type_expression(left_type, right_type);
     
   case T_LMENOR:
   case T_LMAIOR:
@@ -96,16 +153,14 @@ void check_expression(AST* node)
   case T_LNE:
   case T_LAND:
   case T_LOR:
+    node->exp_type = type_expression(left_type, right_type);
     break;
 
   case T_ANEG:
-    break;
-
   case T_LNEG:
+    node->exp_type = left_type;
     break;
 
-  case T_LITERAL:
-    break;
 
   case T_IDENTIFICADOR:
   case T_IDENTIFIC_D:
@@ -154,6 +209,11 @@ void check_command(AST *node)
       case T_FUNCAO_C:
         right_type = node->son2->son1->hash_pointer->data_type;
         break;
+
+      default:
+        right_type = node->son2->exp_type;
+        break;
+
     }
     if (node->son1->hash_pointer->type == LT_IDENT)
     {
@@ -164,22 +224,8 @@ void check_command(AST *node)
       type_check(node->son1->hash_pointer->data_type, right_type);
     else if (node->son1->hash_pointer->type == VAR_V)
     {
-      int can_int = 0, can_float = 0, can_char = 0;
-      switch (node->son1->hash_pointer->data_type)
-      {
-      case INT_VAR:
-        can_int = 1;
-        can_char = 1;
-        break;
-      case FLOAT_VAR:
-        can_float = 1;
-        break;
-      case CHAR_VAR:
-        can_int = 1;
-        can_char = 1;
-      }
-      type_vector(node->son2, can_int, can_float, can_char, 0);
-      type_check(node->son1->son1->hash_pointer->data_type, LT_INT);
+      type_check(node->son1->hash_pointer->data_type, right_type);
+      check_int(node->son1->son1);
     }
     break; 
 
@@ -202,6 +248,28 @@ void check_command(AST *node)
     break;
 
   case T_RETURN:
+    switch (node->son1->type)
+    {
+      case T_LITERAL:
+        type_check(return_type, node->son1->hash_pointer->type);
+        break;
+
+      case T_IDENTIFICADOR:
+      case T_IDENTIFIC_D:
+      case T_IDENTIFIC_R:
+        type_check(return_type, node->son1->hash_pointer->data_type);
+        break;
+
+      case T_FUNCAO_C:
+        type_check(return_type, node->son1->son1->hash_pointer->data_type);
+        break;
+
+      default:
+        type_check(return_type, node->son1->exp_type);
+        break;
+
+    }
+    returned = 1;
     break;
 
   }
@@ -210,12 +278,49 @@ void check_command(AST *node)
 
 void type_check(int type1, int type2)
 {
+  printf("\n1: %d, 2: %d\n", type1, type2);
   if ((type1 != type2) && !(((type1 == CHAR_VAR) && (type2 == INT_VAR)) || ((type2 == CHAR_VAR) && (type1 == INT_VAR))))
     semanticError("Types do not match;");
 }
 
 void check_int(AST* node)
 {
+  switch (node->type)
+  {
+    case T_LITERAL:
+      type_check(node->hash_pointer->type, LT_INT);
+      break;
+
+    case T_IDENTIFICADOR:
+    case T_IDENTIFIC_D:
+    case T_IDENTIFIC_R:
+      type_check(node->hash_pointer->data_type, LT_INT);
+      break;
+
+    case T_FUNCAO_C:
+      type_check(node->son1->hash_pointer->data_type, LT_INT);
+      break;
+  }
+
+}
+
+void check_returned()
+{
+  if (!returned)
+    semanticError("Function didn't return any value;");
+}
+
+int type_expression(int type1, int type2)
+{
+  if (type1 == type2)
+    return type1;
+
+  if ((type1 == LT_FLOAT) || (type2 == LT_FLOAT))
+    return LT_FLOAT;
+  else if ((type1 == LT_INT) || (type2 == LT_INT))
+    return LT_INT;
+  else
+    return LT_CHAR;
 }
 
 void type_vector(AST* node, int can_int, int can_float, int can_char, int can_string)

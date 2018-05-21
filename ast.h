@@ -47,6 +47,7 @@
 typedef struct ast_node{
   int type;
   int var_type;
+  int exp_type;
   HASH* hash_pointer;
   struct ast_node* son1;
   struct ast_node* son2;

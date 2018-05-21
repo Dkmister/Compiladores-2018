@@ -19,7 +19,7 @@ int main()
   a = 15;
   pt = &a;
   i = #pt;
-  v[2.5] = 0;
+  //v[2.5] = 0;
   v[2] = v[10-1];
   for (i = 1 to 10)
     print i, " ";
@@ -29,7 +29,7 @@ int main()
   while (i<10)
     {
     a = incn(a,1);
-    i = i + 1
+    i = i + 1;
     };
 
   print "Incrementado algumas vezes fica ", a, "\n";
@@ -39,6 +39,7 @@ int main()
     ;
   if (a==11) then else
     ;
+  return 1;
   ;;;
   {;};
   {}
@@ -46,6 +47,7 @@ int main()
 
 int voidfunc()
   {
+  return 1;
   }
   	
 

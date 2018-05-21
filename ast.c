@@ -5,6 +5,7 @@ AST* new_ast(int type)
   AST* node = malloc(sizeof(AST));
   node->type = type;
   node->var_type = NOT_VAR;
+  node->exp_type = 0;
   node->hash_pointer = NULL;
   node->son1 = NULL;
   node->son2 = NULL;
