@@ -19,7 +19,7 @@ extern AST* main_node;
   int tipo_var;
 }
 
-%define parse.error verbose
+//%define parse.error verbose
 %defines
 
 /* Declaracao de tokens */

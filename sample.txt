@@ -16,7 +16,7 @@ int incn (int x, int n)
 
 int main()
 {
-  a = 15;
+  a[1] = 15;
   pt = &a;
   i = #pt;
   //v[2.5] = 0;
