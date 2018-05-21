@@ -12,8 +12,6 @@ void hashInit(void)
      Table[i] = 0 ;
 }
 
-
-
 int hashAddress(char* text){
 
   int address = 1;
@@ -25,8 +23,6 @@ int hashAddress(char* text){
 
   return address - 1;
 }
-
-
 
 HASH* hashInsert(int type, char* text)
 {
@@ -75,7 +71,6 @@ HASH* hashFind(char* text){
   return 0;
 }
 
-
 void hashPrint(void)
 {
   int i;
@@ -89,7 +84,7 @@ void hashPrint(void)
 
 void hashUnscope(void)
 {
-int i;
+  int i;
 
   HASH* node;
 
@@ -103,5 +98,14 @@ int i;
         node->scoped = 0;
       }
     }
+}
+
+PARAM* new_param(int type)
+{
+  PARAM* new_param = 0;
+  new_param = (PARAM*) calloc(1,sizeof(PARAM));
+  new_param->type = type;
+  new_param->next = NULL;
+  return new_param;
 }
 

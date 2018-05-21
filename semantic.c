@@ -65,6 +65,7 @@ void set_declarations(AST* node)
       node->son1->hash_pointer->data_type = node->son1->var_type;
       return_type = node->son1->var_type;
       returned = 0;
+      node->son1->hash_pointer->param = set_param(node->son1->son2);
     } else
       semanticError("Identifier already declared;");
     break;
@@ -188,6 +189,7 @@ void check_command(AST *node)
       semanticError("Identifier not declared;");
     } else if (node->son1->hash_pointer->type != VAR_F)
       semanticError("Identifier not declared as function;");
+    check_param(node);
     break;
 
   case T_BLOCO:
@@ -300,6 +302,10 @@ void check_int(AST* node)
     case T_FUNCAO_C:
       type_check(node->son1->hash_pointer->data_type, LT_INT);
       break;
+
+    default:
+      type_check(node->exp_type, LT_INT);
+      break;
   }
 
 }
@@ -333,5 +339,49 @@ void type_vector(AST* node, int can_int, int can_float, int can_char, int can_st
     else
       semanticError("Types do not match;");
   } else return;
+}
+
+void check_param(AST* call)
+{
+  AST* temp_ast = call->son1->son2;
+  PARAM* temp_param = call->son1->hash_pointer->param;
+  while ((temp_ast != NULL) && (temp_param != NULL))
+  {
+    switch (temp_ast->type)
+    {
+      case T_LITERAL:
+        type_check(temp_ast->hash_pointer->type, temp_param->type);
+        break;
+
+      case T_IDENTIFICADOR:
+      case T_IDENTIFIC_D:
+      case T_IDENTIFIC_R:
+        type_check(temp_ast->hash_pointer->data_type, temp_param->type);
+        break;
+
+      case T_FUNCAO_C:
+        type_check(temp_ast->son1->hash_pointer->data_type, temp_param->type);
+        break;
+
+      default:
+        type_check(temp_ast->exp_type, temp_param->type);
+        break;
+    }
+    temp_ast = temp_ast->son5;
+    temp_param = temp_param->next;
+  }
+  if ((temp_ast != NULL) || (temp_param != NULL))
+    semanticError("Number of parameters do not match;");
+}
+
+PARAM* set_param(AST* node)
+{
+  PARAM* temp_param = NULL;
+  if (node != NULL)
+  {
+    temp_param = new_param(node->var_type);
+    temp_param->next = set_param(node->son5);
+  }
+  return temp_param;
 }
 

@@ -28,7 +28,7 @@ int main()
   read i;
   while (i<10)
     {
-    a = incn(a,1);
+    a = incn(a,1+15);
     i = i + 1;
     };
 

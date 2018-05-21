@@ -16,9 +16,15 @@ typedef struct hash_node{
   int type;
   int data_type;
   int scoped;
+  struct param_node* param;
   char* text;
   struct hash_node* next;
 }HASH;
+
+typedef struct param_node{
+  int type;
+  struct param_node* next;
+}PARAM;
 
 void hashInit(void);
 int hashAddress(char* text);
@@ -26,6 +32,8 @@ HASH* hashInsert(int type, char* text);
 HASH* hashFind(char* text);
 void hashPrint(void);
 void hashUnscope(void);
+
+PARAM* new_param(int type);
 
 
 #endif
