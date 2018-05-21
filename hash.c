@@ -93,6 +93,7 @@ void hashUnscope(void)
     {
       if (node->scoped == 1)
       {
+        printf("\nunscoped");
         node->type = LT_IDENT;
         node->data_type = 0;
         node->scoped = 0;

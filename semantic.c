@@ -102,6 +102,7 @@ void check_expression(AST* node)
     case T_IDENTIFIC_D:
     case T_IDENTIFIC_R:
       left_type = node->son1->hash_pointer->data_type;
+      check_identifier(node->son1);
       break;
 
     case T_FUNCAO_C:
@@ -126,6 +127,7 @@ void check_expression(AST* node)
     case T_IDENTIFIC_D:
     case T_IDENTIFIC_R:
       right_type = node->son2->hash_pointer->data_type;
+      check_identifier(node->son2);
       break;
 
     case T_FUNCAO_C:
@@ -170,6 +172,7 @@ void check_expression(AST* node)
     {
       semanticError("Identifier not declared;");
     }
+    check_identifier(node);
     break;
 
   }
@@ -196,6 +199,7 @@ void check_command(AST *node)
     break;
 
   case T_ATRIBUICAO:
+    check_identifier(node->son1);
     switch (node->son2->type)
     {
       case T_LITERAL:
@@ -206,6 +210,7 @@ void check_command(AST *node)
       case T_IDENTIFIC_D:
       case T_IDENTIFIC_R:
         right_type = node->son2->hash_pointer->data_type;
+        check_identifier(node->son2);
         break;
 
       case T_FUNCAO_C:
@@ -260,6 +265,7 @@ void check_command(AST *node)
       case T_IDENTIFIC_D:
       case T_IDENTIFIC_R:
         type_check(return_type, node->son1->hash_pointer->data_type);
+        check_identifier(node->son1);
         break;
 
       case T_FUNCAO_C:
@@ -278,9 +284,35 @@ void check_command(AST *node)
 
 }
 
+void check_identifier(AST* node)
+{
+
+  switch (node->hash_pointer->type)
+  {
+
+  case VAR_S:
+    if (node->son1 != NULL)
+      semanticError("Simple var, not a vector;");
+    break;
+
+  case VAR_V:
+    if (node->son1 == NULL)
+      semanticError("Vector without index;");
+    break;
+
+  case VAR_F:
+    if (node->son1 != NULL)
+      semanticError("Function, not a vector;");
+    //if (node->son2 == NULL)
+      semanticError("Function, not a identifier;");
+    break;
+
+  }
+}
+
 void type_check(int type1, int type2)
 {
-  printf("\n1: %d, 2: %d\n", type1, type2);
+  //printf("\n1: %d, 2: %d\n", type1, type2);
   if ((type1 != type2) && !(((type1 == CHAR_VAR) && (type2 == INT_VAR)) || ((type2 == CHAR_VAR) && (type1 == INT_VAR))))
     semanticError("Types do not match;");
 }
@@ -297,6 +329,7 @@ void check_int(AST* node)
     case T_IDENTIFIC_D:
     case T_IDENTIFIC_R:
       type_check(node->hash_pointer->data_type, LT_INT);
+      check_identifier(node);
       break;
 
     case T_FUNCAO_C:
@@ -357,6 +390,7 @@ void check_param(AST* call)
       case T_IDENTIFIC_D:
       case T_IDENTIFIC_R:
         type_check(temp_ast->hash_pointer->data_type, temp_param->type);
+        check_identifier(temp_ast);
         break;
 
       case T_FUNCAO_C:

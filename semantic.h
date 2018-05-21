@@ -9,6 +9,8 @@ void check_expression(AST* node);
 
 void check_command(AST* node);
 
+void check_identifier(AST* node);
+
 void type_check(int type1, int type2);
 
 void check_int(AST* node);

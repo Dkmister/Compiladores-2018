@@ -125,7 +125,7 @@ Lista_Comandos: Lista_Comandos';' Comando_Simples	{ $$ = $1; if($$ != NULL) list
 
 Comando_Simples: 		{ $$ = NULL; }
 Comando_Simples: Bloco		{ $$ = $1; }
-Comando_Simples: Atribuicao	{ $$ = $1; }
+Comando_Simples: Atribuicao	{ $$ = $1; check_command($$); }
 Comando_Simples: If		{ $$ = $1; }
 Comando_Simples: If_Else	{ $$ = $1; }
 Comando_Simples: While		{ $$ = $1; }
