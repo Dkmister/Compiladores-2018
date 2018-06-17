@@ -32,6 +32,7 @@ HASH* hashInsert(int type, char* text);
 HASH* hashFind(char* text);
 void hashPrint(void);
 void hashUnscope(void);
+HASH* makeTemp(void);
 
 PARAM* new_param(int type);
 

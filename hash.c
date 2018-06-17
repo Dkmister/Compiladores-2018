@@ -100,6 +100,17 @@ void hashUnscope(void)
     }
 }
 
+HASH* makeTemp(void)
+{
+  static int serialNumber = 0;
+  static char buffer[64];
+  
+  sprintf(buffer,"%d",serialNumber++);
+  hashInsert(LIT_INT,buffer);
+
+}
+
+
 PARAM* new_param(int type)
 {
   PARAM* new_param = 0;
