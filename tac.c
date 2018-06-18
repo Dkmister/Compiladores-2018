@@ -7,7 +7,16 @@
 #define TAC_MUL 4
 #define TAC_DIV 5
 #define TAC_ASSIGN 6
-
+#define TAC_LABEL 7
+#define TAC_BEGINFUN 8
+#define TAC_ENDFUN 9
+#define TAC_IFZ 10
+#define TAC_JUMP 11
+#define TAC_CALL 12
+#define TAC_ARG 13
+#define TAC_RET 14
+#define TAC_PRINT 15
+#define TAC_READ 16
 
 
 TAC* tacCreate(int type, HASH* res, HASH *op1, HASH *op2)
@@ -73,7 +82,6 @@ TAC* tacJoin(TAC*l1,TAC*l2){
 
 TAC *codeGenerator(AST *node){
 
-  int i ;
   TAC *result = 0;
   TAC *code[MAX_SONS];
 

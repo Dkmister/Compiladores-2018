@@ -1,8 +1,9 @@
 #ifndef TAC_HEADER
-#define TAC_HEADER
 #include "hash.h"
 #include "ast.h"
 #include <stdio.h>
+#define TAC_HEADER
+
 
 typedef struct tac{
   int type;
