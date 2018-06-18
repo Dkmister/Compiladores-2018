@@ -1,5 +1,6 @@
 #include "tac.h"
 
+#define MAX_SONS 5
 #define TAC_SYMBOL 1
 #define TAC_ADD 2
 #define TAC_SUB 3
@@ -55,3 +56,39 @@ TAC* tacPrintBack(TAC*tac)
   tacPrintSingle(tac);
   tacPrintBack(tac->prev);
 }
+
+
+TAC* tacJoin(TAC*l1,TAC*l2){
+
+  TAC*aux = 0;
+  if (!l1) return l2;
+  if (!l2) return l1;
+  for(aux = l1; aux->prev; aux = aux->prev) ;
+
+  aux->prev = l1;
+  return l2;
+}
+
+// Intermediate Code Generation
+
+TAC *codeGenerator(AST *node){
+
+  int i ;
+  TAC *result = 0;
+  TAC *code[MAX_SONS];
+
+  if (!node) return 0;
+  
+  code[0] = codeGenerator(node->son1);
+  code[1] = codeGenerator(node->son2);
+  code[2] = codeGenerator(node->son3);
+  code[3] = codeGenerator(node->son4);
+  code[4] = codeGenerator(node->son5);
+
+
+  switch(node->type){
+
+	case T_ASOMA: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_ADD,0,code[0]?code[0]->res:0,code[1]?code[1]->res:0))); break;
+	default: result = tacJoin(tacJoin(tacJoin(tacJoin(code[1],code[1]),code[2]),code[3]),code[4]);}
+
+  return result; }
