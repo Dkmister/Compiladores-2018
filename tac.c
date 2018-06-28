@@ -98,7 +98,8 @@ TAC *codeGenerator(AST *node){
     case T_ADIV:  result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_DIV,0,code[0]?code[0]->res:0,code[1]?code[1]->res:0))); break;
     case T_AMULT: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_MUL,0,code[0]?code[0]->res:0,code[1]?code[1]->res:0))); break;
     case T_ASUBT: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_SUB,0,code[0]?code[0]->res:0,code[1]?code[1]->res:0))); break;
-	case T_ASOMA: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_ADD,0,code[0]?code[0]->res:0,code[1]?code[1]->res:0))); break;
-	default: result = tacJoin(tacJoin(tacJoin(tacJoin(code[1],code[1]),code[2]),code[3]),code[4]);}
+    case T_ASOMA: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_ADD,0,code[0]?code[0]->res:0,code[1]?code[1]->res:0))); break;
+    case T_ATRIBUICAO: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_ASSIGN,0,code[0]?code[0]->res:0,code[1]?code[1]->res:0))); break;
+    default: result = tacJoin(tacJoin(tacJoin(tacJoin(code[1],code[1]),code[2]),code[3]),code[4]);}
 
   return result; }
