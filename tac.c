@@ -36,7 +36,7 @@ TAC* tacCreate(int type, HASH* res, HASH *op1, HASH *op2)
 
 TAC* tacPrintSingle(TAC*tac)
 {
-  if(!tac) return;
+  if(!tac) return 0;
   fprintf(stderr,"TAC(");
   switch(tac->type)
   {
@@ -61,7 +61,7 @@ TAC* tacPrintSingle(TAC*tac)
 
 TAC* tacPrintBack(TAC*tac)
 {
-  if(!tac) return;
+  if(!tac) return 0;
   tacPrintSingle(tac);
   tacPrintBack(tac->prev);
 }
