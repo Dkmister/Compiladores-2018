@@ -106,7 +106,7 @@ HASH* makeTemp(void)
   static char buffer[64];
   
   sprintf(buffer,"%d",serialNumber++);
-  hashInsert(LIT_INT,buffer);
+  hashInsert(LT_INT,buffer);
 
 }
 
