@@ -20,7 +20,7 @@ hash.o: hash.c
 aux.o: aux.c
 	gcc -g -c aux.c
 tac.o: tac.c
-	gcc -g -c tac.c
+	gcc -g -c -w tac.c
 lex.yy.o: lex.yy.c
 	gcc -g -c lex.yy.c
 lex.yy.c: scanner.l
@@ -30,4 +30,4 @@ parser.tab.o: parser.tab.c
 parser.tab.c: parser.y
 	bison -d -v parser.y
 clean:
-	rm *.o lex.yy.c etapa4 parser.tab.c parser.tab.h parser.output lex.yy.h saida.txt saida2.txt
+	rm *.o lex.yy.c parser.tab.c parser.tab.h parser.output lex.yy.h saida.txt saida2.txt etapa5
