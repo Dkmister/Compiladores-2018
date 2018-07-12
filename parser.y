@@ -2,6 +2,7 @@
    Vilmar Neto         00242276*/
 
 %{
+#include "tac.h"
 #include "main.h"
 #include "hash.h"
 #include "ast.h"
@@ -10,7 +11,7 @@ int yydebug = 1;
 
 extern int yyparse(void);
 extern AST* main_node;
-
+extern TAC* main_code;
 %}
 
 %union {
@@ -79,10 +80,10 @@ extern AST* main_node;
 
 %%
 
-/* Linguagem lang182 */
+/* Linguagem lang181 */
 
 
-Codigo: 			{ $$ = new_ast(T_PROGRAMA); main_node = $$; 	}
+Codigo: 			{ $$ = new_ast(T_PROGRAMA); main_node = $$; main_code = codeGenerator(main_node);}
 Codigo: Codigo Declaracoes	{ $$ = $1; list_son($1, $2); }
 
 Declaracoes: De_Globais';'	{ $$ = $1; }

@@ -12,6 +12,8 @@ AST* new_ast(int type)
   node->son3 = NULL;
   node->son4 = NULL;
   node->son5 = NULL;
+  return node;
+  
 }
 
 AST* new_ident_ast(HASH* pointer)
